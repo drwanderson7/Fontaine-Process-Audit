@@ -762,6 +762,7 @@
 
     /* ── HIDE INTERACTIVE / SCREEN-ONLY ELEMENTS ── */
     .header-actions    { display: none !important; }
+    #save-indicator    { display: none !important; }
     .btn               { display: none !important; }
     .no-findings-msg   { display: none !important; }
     .instructions      { display: none !important; }
@@ -957,8 +958,18 @@
       <button class="btn btn-secondary" onclick="printBlank()" title="Prints a blank form with 2 risk-assessed finding blocks and 6 standard finding blocks" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.75);">📄 Print Blank Form</button>
       <button class="btn btn-primary" onclick="downloadJSON()">⬇ Download Data</button>
     </div>
-    <div id="filename-preview" style="font-size:10px;color:rgba(255,255,255,0.5);font-family:monospace;letter-spacing:0.02em;">
-      PA_[Process]_[Date].pdf
+    <div style="display:flex;justify-content:space-between;align-items:center;width:100%;gap:12px;">
+      <div id="filename-preview" style="font-size:10px;color:rgba(255,255,255,0.5);font-family:monospace;letter-spacing:0.02em;">
+        PA_[Process]_[Date].pdf
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span id="save-indicator" style="font-size:10px;color:rgba(255,255,255,0.45);transition:opacity 0.5s;white-space:nowrap;">
+          Auto-saving...
+        </span>
+        <button class="btn" onclick="clearStorage()" style="background:transparent;border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.5);font-size:10px;padding:4px 10px;">
+          ✕ Clear Draft
+        </button>
+      </div>
     </div>
   </div>
 </div>
@@ -1748,6 +1759,183 @@ function downloadJSON() {
   a.click();
   URL.revokeObjectURL(url);
 }
+
+// ── AUTO-SAVE TO LOCAL STORAGE ──
+const STORAGE_KEY = 'F6021_audit_draft';
+
+function collectFormState() {
+  const state = {
+    savedAt: new Date().toISOString(),
+    header: {
+      date:     document.getElementById('f-date')?.value || '',
+      auditor:  document.getElementById('f-auditor')?.value || '',
+      process:  document.getElementById('f-process')?.value || '',
+      operator: document.getElementById('f-operator')?.value || '',
+      partnum:  document.getElementById('f-partnum')?.value || '',
+      rev:      document.getElementById('f-rev')?.value || '',
+      wi:       document.getElementById('f-wi')?.value || '',
+      step:     document.getElementById('f-step')?.value || '',
+      refs:     document.getElementById('f-refs')?.value || '',
+    },
+    auditResult: auditResult,
+    resultComments: document.getElementById('result-comments')?.value || '',
+    signoff: {
+      closedBy: document.getElementById('so-closed-by')?.value || '',
+      date:     document.getElementById('so-date')?.value || '',
+      sig:      document.getElementById('so-sig')?.value || '',
+    },
+    questions: {},
+    findingBlocks: {},
+  };
+
+  // Save all question answers and notes
+  document.querySelectorAll('.q-row').forEach(row => {
+    const qid = row.dataset.qid;
+    if (!qid) return;
+    const yn    = row.querySelector('.yn-select')?.value || '';
+    const notes = row.querySelector('.q-notes textarea')?.value || '';
+    state.questions[qid] = { yn, notes };
+  });
+
+  // Save finding block content
+  Object.keys(findings).forEach(qid => {
+    const block = document.getElementById(`finding-block-${qid}`);
+    if (!block) return;
+    const inputs    = [...block.querySelectorAll('input[type=text], textarea')].map(el => el.value);
+    const selects   = [...block.querySelectorAll('select')].map(el => el.value);
+    const checks    = [...block.querySelectorAll('input[type=checkbox]')].map(el => el.checked);
+    const radios    = [...block.querySelectorAll('input[type=radio]')].map(el => ({ name: el.name, value: el.value, checked: el.checked }));
+    state.findingBlocks[qid] = { inputs, selects, checks, radios };
+  });
+
+  return state;
+}
+
+function saveToStorage() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(collectFormState()));
+    updateSaveIndicator('Saved');
+  } catch(e) {
+    console.warn('Auto-save failed:', e);
+  }
+}
+
+function restoreFromStorage() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return false;
+    const state = JSON.parse(raw);
+
+    // Restore header fields
+    if (state.header) {
+      Object.entries(state.header).forEach(([key, val]) => {
+        const el = document.getElementById(`f-${key}`);
+        if (el) { el.value = val; el.dispatchEvent(new Event('input')); }
+      });
+    }
+
+    // Restore audit result
+    if (state.auditResult) setResult(state.auditResult);
+    if (state.resultComments) {
+      const rc = document.getElementById('result-comments');
+      if (rc) rc.value = state.resultComments;
+    }
+
+    // Restore sign-off
+    if (state.signoff) {
+      const so = state.signoff;
+      if (document.getElementById('so-closed-by')) document.getElementById('so-closed-by').value = so.closedBy || '';
+      if (document.getElementById('so-date'))      document.getElementById('so-date').value      = so.date     || '';
+      if (document.getElementById('so-sig')) {
+        document.getElementById('so-sig').value = so.sig || '';
+        updateSignature('so-sig', 'so-sig-display');
+      }
+    }
+
+    // Restore question answers — trigger handleYN to rebuild finding blocks
+    if (state.questions) {
+      Object.entries(state.questions).forEach(([qid, data]) => {
+        const row = document.querySelector(`tr[data-qid="${qid}"]`);
+        if (!row) return;
+        const select = row.querySelector('.yn-select');
+        const notes  = row.querySelector('.q-notes textarea');
+        if (select && data.yn) {
+          select.value = data.yn;
+          handleYN(select, qid);
+        }
+        if (notes && data.notes) {
+          notes.value = data.notes;
+          autoResize(notes);
+        }
+      });
+    }
+
+    // Restore finding block content after blocks are created
+    setTimeout(() => {
+      if (state.findingBlocks) {
+        Object.entries(state.findingBlocks).forEach(([qid, data]) => {
+          const block = document.getElementById(`finding-block-${qid}`);
+          if (!block) return;
+          const inputs  = block.querySelectorAll('input[type=text], textarea');
+          const selects = block.querySelectorAll('select');
+          const checks  = block.querySelectorAll('input[type=checkbox]');
+          const radios  = block.querySelectorAll('input[type=radio]');
+          data.inputs?.forEach((val, i)  => { if (inputs[i])  { inputs[i].value = val; if (inputs[i].tagName === 'TEXTAREA') autoResize(inputs[i]); } });
+          data.selects?.forEach((val, i) => { if (selects[i]) { selects[i].value = val; styleYN(selects[i]); } });
+          data.checks?.forEach((val, i)  => { if (checks[i])  checks[i].checked = val; });
+          data.radios?.forEach((r, i)    => { if (radios[i] && radios[i].name === r.name) radios[i].checked = r.checked; });
+        });
+      }
+      updateSummary();
+      updateFindingsCount();
+      updateResultHint();
+      updateFilenamePreview();
+    }, 300);
+
+    return state.savedAt;
+  } catch(e) {
+    console.warn('Restore failed:', e);
+    return false;
+  }
+}
+
+function clearStorage() {
+  if (confirm('Clear saved draft and reset the form? This cannot be undone.')) {
+    localStorage.removeItem(STORAGE_KEY);
+    location.reload();
+  }
+}
+
+function updateSaveIndicator(status) {
+  const el = document.getElementById('save-indicator');
+  if (!el) return;
+  const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  el.textContent = `${status} ${now}`;
+  el.style.opacity = '1';
+  setTimeout(() => { el.style.opacity = '0.5'; }, 2000);
+}
+
+// Auto-save every 30 seconds and on any input
+let saveTimer;
+function scheduleSave() {
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(saveToStorage, 1500); // debounce 1.5s after last keystroke
+}
+
+// Hook into all inputs on the page
+document.addEventListener('input',  scheduleSave);
+document.addEventListener('change', scheduleSave);
+
+// Restore on page load
+window.addEventListener('DOMContentLoaded', () => {
+  const savedAt = restoreFromStorage();
+  if (savedAt) {
+    const time = new Date(savedAt).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' });
+    updateSaveIndicator(`Draft restored from ${time} —`);
+    document.getElementById('save-indicator').style.opacity = '1';
+  }
+});
+
 </script>
 </body>
 </html>
