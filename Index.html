@@ -1640,6 +1640,130 @@ function getFileName() {
   return `PA_${process}_${datePart}`;
 }
 
+function buildBlankFindingBlock(num, includeRiskAssessment) {
+  const riskSection = includeRiskAssessment ? `
+    <div class="sub-section-header yellow" style="font-size:10px;padding:5px 12px;background:#CA8A04;color:white;font-weight:700;">
+      ▲ Severity Assessment — complete for Risk-Assessed (▲) questions only
+    </div>
+    <div class="blank-field two-col">
+      <div class="blank-field-label">Describe the deviation observed</div>
+      <div class="blank-field-value tall">
+        <div class="blank-write-line"></div>
+        <div class="blank-write-line"></div>
+        <div class="blank-write-line"></div>
+      </div>
+    </div>
+    <div class="blank-field two-col">
+      <div class="blank-field-label">Does deviation affect product conformance or safety?</div>
+      <div class="blank-yn">
+        <div class="blank-yn-option"><span class="blank-circle"></span> Yes → Critical — CAR required</div>
+        <div class="blank-yn-option"><span class="blank-circle"></span> No → Major — resolution only</div>
+      </div>
+    </div>
+    <div class="blank-field two-col">
+      <div class="blank-field-label">Basis for determination</div>
+      <div class="blank-field-value tall">
+        <div class="blank-write-line"></div>
+        <div class="blank-write-line"></div>
+        <div class="blank-write-line"></div>
+      </div>
+    </div>
+    <div class="blank-field full">
+      <div class="blank-field-value" style="padding:8px 12px;font-weight:600;font-size:10px;">
+        Severity: &nbsp;&nbsp; ☐ &nbsp;CRITICAL — F-6000 CAR required &nbsp;&nbsp;&nbsp;&nbsp; ☐ &nbsp;MAJOR — Resolution only
+      </div>
+    </div>` : '';
+
+  return `
+    <div class="blank-finding-block">
+      <div class="blank-finding-header">FINDING #${num}${includeRiskAssessment ? ' — Includes Severity Assessment Section' : ''}</div>
+      <div class="blank-field two-col">
+        <div class="blank-field-label">Question / Area</div>
+        <div class="blank-field-value"><div class="blank-write-line"></div></div>
+      </div>
+      ${riskSection}
+      <div class="sub-section-header blue" style="font-size:10px;padding:5px 12px;background:#2563EB;color:white;font-weight:700;">
+        Corrective Resolution — complete for all findings
+      </div>
+      <div class="blank-field two-col">
+        <div class="blank-field-label">Immediate Action Taken</div>
+        <div class="blank-field-value tall">
+          <div class="blank-write-line"></div>
+          <div class="blank-write-line"></div>
+          <div class="blank-write-line"></div>
+        </div>
+      </div>
+      <div class="blank-field full">
+        <div class="blank-checkbox-row">
+          <span style="font-weight:600;color:#6B7280;margin-right:4px;">Root Cause:</span>
+          <div class="blank-checkbox-item"><span class="blank-check-box"></span> Training</div>
+          <div class="blank-checkbox-item"><span class="blank-check-box"></span> Procedure Unclear / Inadequate</div>
+          <div class="blank-checkbox-item"><span class="blank-check-box"></span> Operator Error</div>
+          <div class="blank-checkbox-item"><span class="blank-check-box"></span> Equipment</div>
+          <div class="blank-checkbox-item"><span class="blank-check-box"></span> Other</div>
+        </div>
+      </div>
+      <div class="blank-field two-col">
+        <div class="blank-field-label">First Occurrence?</div>
+        <div class="blank-yn">
+          <div class="blank-yn-option"><span class="blank-circle"></span> Yes</div>
+          <div class="blank-yn-option"><span class="blank-circle"></span> No → escalate to F-6000 CAR</div>
+        </div>
+      </div>
+      <div class="blank-field two-col">
+        <div class="blank-field-label">F-6000 CAR Required?</div>
+        <div class="blank-yn">
+          <div class="blank-yn-option"><span class="blank-circle"></span> Yes &nbsp; CAR #: _________________</div>
+          <div class="blank-yn-option"><span class="blank-circle"></span> No</div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function printBlank() {
+  const container = document.getElementById('blank-findings');
+
+  let html = `
+    <div style="background:#EA580C;color:white;padding:9px 14px;font-weight:700;font-size:12px;
+                letter-spacing:0.05em;text-transform:uppercase;border-radius:6px 6px 0 0;margin-bottom:0;">
+      Resolution &amp; Disposition — Complete one block per NO answer found above
+    </div>
+    <div style="margin-bottom:12px;border:1px solid #E2E4E8;border-top:none;border-radius:0 0 6px 6px;overflow:hidden;">
+      <div style="padding:6px 14px;background:#FFF7ED;font-size:10px;color:#EA580C;font-style:italic;border-bottom:1px solid #E2E4E8;">
+        Findings #1 and #2 include the Severity Assessment section for ▲ Risk-Assessed questions.
+        Use Findings #3–#8 for ★ Critical and ◆ Major findings which do not require severity assessment.
+      </div>
+    </div>`;
+
+  for (let i = 1; i <= 8; i++) {
+    html += buildBlankFindingBlock(i, i <= 2);
+  }
+
+  container.innerHTML = html;
+  container.classList.add('printing');
+
+  // Hide dynamic content during blank print
+  document.getElementById('findings-container').style.display = 'none';
+  document.getElementById('findings-summary').style.display = 'none';
+  document.getElementById('no-findings-msg').style.display = 'none';
+
+  const originalTitle = document.title;
+  document.title = 'PA_BlankForm_F6021_Rev3';
+  window.print();
+
+  // Restore after print dialog closes
+  setTimeout(() => {
+    document.title = originalTitle;
+    container.classList.remove('printing');
+    container.innerHTML = '';
+    document.getElementById('findings-container').style.display = '';
+    document.getElementById('findings-summary').style.display = '';
+    if (Object.keys(findings).length === 0) {
+      document.getElementById('no-findings-msg').style.display = 'block';
+    }
+  }, 2000);
+}
+
 function printForm() {
   // Stamp pass/fail into data attribute so CSS can show it in print
   const wrap = document.querySelector('.pass-fail-wrap');
