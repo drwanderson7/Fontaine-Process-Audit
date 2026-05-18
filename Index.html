@@ -465,26 +465,35 @@
     font-size: 13px;
     padding: 4px 0;
     background: transparent;
-    color: transparent; /* hide typed text */
-    caret-color: var(--text); /* keep cursor visible */
+    color: transparent !important;
+    -webkit-text-fill-color: transparent !important;
+    caret-color: var(--text);
+    position: relative;
+    z-index: 2;
   }
   .sig-input::placeholder {
     color: var(--muted);
+    -webkit-text-fill-color: var(--muted);
     font-family: inherit;
     font-size: 11px;
   }
+  .sig-input.has-value::placeholder {
+    color: transparent !important;
+    -webkit-text-fill-color: transparent !important;
+  }
   .sig-display {
     position: absolute;
-    top: 0; left: 0;
+    top: -4px; left: 0;
     width: 100%;
     font-family: 'Dancing Script', cursive;
     font-size: 22px;
     color: var(--nav);
     pointer-events: none;
-    line-height: 1.2;
+    line-height: 1.4;
     padding: 0 2px;
     white-space: nowrap;
     overflow: hidden;
+    z-index: 1;
   }
   .sig-display.empty { display: none; }
 
@@ -1312,9 +1321,11 @@ function updateSignature(inputId, displayId) {
   if (val) {
     display.textContent = val;
     display.classList.remove('empty');
+    input.classList.add('has-value');
   } else {
     display.textContent = '';
     display.classList.add('empty');
+    input.classList.remove('has-value');
   }
 }
 
