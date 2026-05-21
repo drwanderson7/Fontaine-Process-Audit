@@ -878,6 +878,10 @@
     .car-field { font-size: 9px; }
     .car-field input { font-size: 9px !important; border-bottom: 1px solid #ccc !important; background: transparent !important; width: 100px !important; }
 
+    /* ── AUDIT METHOD RADIOS ── */
+    input[type=radio] { -webkit-print-color-adjust: exact !important; }
+    .field-input-wrap label { font-size: 9px !important; }
+
     /* ── SIGNATURE ── */
     .sig-input { color: transparent !important; border-bottom: 1px solid #ccc !important; }
     .sig-display { font-size: 20px !important; color: #1E2A3A !important; }
@@ -956,7 +960,7 @@
     <div style="display:flex;gap:8px;">
       <button class="btn btn-secondary" onclick="printForm()" title="In the print dialog: set Destination to 'Save as PDF', Paper = Letter, Margins = Default, enable Background graphics">🖨 Print / Save PDF</button>
       <button class="btn btn-secondary" onclick="printBlank()" title="Prints a blank form with 2 risk-assessed finding blocks and 6 standard finding blocks" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.75);">📄 Print Blank Form</button>
-      <button class="btn btn-primary" onclick="downloadJSON()">⬇ Download Data</button>
+
     </div>
     <div style="display:flex;justify-content:space-between;align-items:center;width:100%;gap:12px;">
       <div id="filename-preview" style="font-size:10px;color:rgba(255,255,255,0.5);font-family:monospace;letter-spacing:0.02em;">
@@ -991,6 +995,25 @@
 
   <!-- ── HEADER FIELDS ── -->
   <div class="card">
+    <div class="field-row">
+      <div class="field-label">Audit Method</div>
+      <div class="field-input-wrap" style="border-right:1px solid var(--border);gap:16px;flex-wrap:wrap;">
+        <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;font-weight:600;">
+          <input type="radio" name="audit-method" id="am-observation" value="observation"
+                 onchange="saveToStorage()" style="width:14px;height:14px;accent-color:#2563EB;cursor:pointer;">
+          👁 Direct Observation — watching operator complete the task physically
+        </label>
+        <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;font-weight:600;">
+          <input type="radio" name="audit-method" id="am-verbal" value="verbal"
+                 onchange="saveToStorage()" style="width:14px;height:14px;accent-color:#2563EB;cursor:pointer;">
+          🗣 Verbal Interview — questions answered verbally by operator
+        </label>
+      </div>
+      <div class="field-label" style="border-left:1px solid var(--border);">Method Notes</div>
+      <div class="field-input-wrap">
+        <input type="text" id="f-method-notes" placeholder="Any notes on audit method…" oninput="scheduleSave()">
+      </div>
+    </div>
     <div class="field-row">
       <div class="field-label">Date of Audit</div>
       <div class="field-input-wrap" style="border-right:1px solid var(--border)">
@@ -1841,48 +1864,6 @@ function updateSummary() {
   });
 }
 
-function downloadJSON() {
-  const data = {
-    form: 'F-6021 Process Audit Form',
-    exported: new Date().toISOString(),
-    header: {
-      date:      document.getElementById('f-date').value,
-      auditor:   document.getElementById('f-auditor').value,
-      process:   document.getElementById('f-process').value,
-      operator:  document.getElementById('f-operator').value,
-      partNumber: document.getElementById('f-partnum').value,
-      revision:  document.getElementById('f-rev').value,
-      wiNumber:  document.getElementById('f-wi').value,
-      stepReviewed: document.getElementById('f-step').value,
-      references: document.getElementById('f-refs').value,
-    },
-    auditResult: auditResult,
-    totalFindings: Object.keys(findings).length,
-    comments: document.getElementById('result-comments').value,
-    questions: {},
-    signOff: {
-      closedBy: document.getElementById('so-closed-by').value,
-      dateClosed: document.getElementById('so-date').value,
-      signature: document.getElementById('so-sig').value,
-    }
-  };
-
-  // Capture question answers
-  document.querySelectorAll('.q-row').forEach(row => {
-    const qid = row.dataset.qid;
-    const yn = row.querySelector('.yn-select')?.value || '';
-    const notes = row.querySelector('.q-notes input')?.value || '';
-    data.questions[qid] = { answer: yn, notes, tier: tierMap[qid] };
-  });
-
-  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `${getFileName()}.json`;
-  a.click();
-  URL.revokeObjectURL(url);
-}
 
 // ── AUTO-SAVE TO LOCAL STORAGE ──
 const STORAGE_KEY = 'F6021_audit_draft';
@@ -1891,15 +1872,17 @@ function collectFormState() {
   const state = {
     savedAt: new Date().toISOString(),
     header: {
-      date:     document.getElementById('f-date')?.value || '',
-      auditor:  document.getElementById('f-auditor')?.value || '',
-      process:  document.getElementById('f-process')?.value || '',
-      operator: document.getElementById('f-operator')?.value || '',
-      partnum:  document.getElementById('f-partnum')?.value || '',
-      rev:      document.getElementById('f-rev')?.value || '',
-      wi:       document.getElementById('f-wi')?.value || '',
-      step:     document.getElementById('f-step')?.value || '',
-      refs:     document.getElementById('f-refs')?.value || '',
+      date:         document.getElementById('f-date')?.value || '',
+      auditor:      document.getElementById('f-auditor')?.value || '',
+      process:      document.getElementById('f-process')?.value || '',
+      operator:     document.getElementById('f-operator')?.value || '',
+      partnum:      document.getElementById('f-partnum')?.value || '',
+      rev:          document.getElementById('f-rev')?.value || '',
+      wi:           document.getElementById('f-wi')?.value || '',
+      step:         document.getElementById('f-step')?.value || '',
+      refs:         document.getElementById('f-refs')?.value || '',
+      auditMethod:  document.querySelector('input[name="audit-method"]:checked')?.value || '',
+      methodNotes:  document.getElementById('f-method-notes')?.value || '',
     },
     auditResult: auditResult,
     resultComments: document.getElementById('result-comments')?.value || '',
@@ -1953,6 +1936,11 @@ function restoreFromStorage() {
     // Restore header fields
     if (state.header) {
       Object.entries(state.header).forEach(([key, val]) => {
+        if (key === 'auditMethod') {
+          const radio = document.querySelector(`input[name="audit-method"][value="${val}"]`);
+          if (radio) radio.checked = true;
+          return;
+        }
         const el = document.getElementById(`f-${key}`);
         if (el) { el.value = val; el.dispatchEvent(new Event('input')); }
       });
