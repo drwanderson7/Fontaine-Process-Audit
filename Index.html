@@ -960,6 +960,8 @@
     <div style="display:flex;gap:8px;">
       <button class="btn btn-secondary" onclick="printForm()" title="In the print dialog: set Destination to 'Save as PDF', Paper = Letter, Margins = Default, enable Background graphics">🖨 Print / Save PDF</button>
       <button class="btn btn-secondary" onclick="printBlank()" title="Prints a blank form with 2 risk-assessed finding blocks and 6 standard finding blocks" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.75);">📄 Print Blank Form</button>
+      <button class="btn btn-secondary" onclick="triggerLoadJSON()" title="Load a previously saved JSON audit file" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.75);">📂 Load Saved Audit</button>
+      <input type="file" id="json-file-input" accept=".json" style="display:none;" onchange="loadFromJSON(event)">
 
     </div>
     <div style="display:flex;justify-content:space-between;align-items:center;width:100%;gap:12px;">
@@ -1871,6 +1873,120 @@ function updateSummary() {
   });
 }
 
+
+// ── LOAD FROM JSON ──
+function triggerLoadJSON() {
+  if (confirm('Loading a saved audit will replace the current form contents. Continue?')) {
+    document.getElementById('json-file-input').click();
+  }
+}
+
+function loadFromJSON(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const data = JSON.parse(e.target.result);
+      applyJSONData(data);
+      showLoadBanner(file.name);
+      // Reset file input so same file can be loaded again if needed
+      document.getElementById('json-file-input').value = '';
+    } catch(err) {
+      alert('Could not read the file. Make sure it is a valid F-6021 audit JSON file.');
+      console.error(err);
+    }
+  };
+  reader.readAsText(file);
+}
+
+function applyJSONData(data) {
+  // Clear existing finding blocks first
+  Object.keys(findings).forEach(qid => removeFindingBlock(qid));
+
+  const h  = data.header  || {};
+  const so = data.signOff || {};
+
+  // Restore header fields
+  const fieldMap = {
+    'f-date':         h.date         || '',
+    'f-auditor':      h.auditor      || '',
+    'f-process':      h.process      || '',
+    'f-operator':     h.operator     || '',
+    'f-partnum':      h.partNumber   || '',
+    'f-rev':          h.revision     || '',
+    'f-wi':           h.wiNumber     || '',
+    'f-step':         h.stepReviewed || '',
+    'f-refs':         h.references   || '',
+    'f-method-notes': h.methodNotes  || '',
+    'result-comments': data.comments || '',
+    'so-closed-by':   so.closedBy   || '',
+    'so-date':        so.dateClosed  || '',
+    'so-sig':         so.signature   || '',
+  };
+  Object.entries(fieldMap).forEach(([id, val]) => {
+    const el = document.getElementById(id);
+    if (el) { el.value = val; el.dispatchEvent(new Event('input')); }
+  });
+
+  // Restore audit method radio
+  if (h.auditMethod) {
+    const radio = document.querySelector(`input[name="audit-method"][value="${h.auditMethod}"]`);
+    if (radio) radio.checked = true;
+  }
+
+  // Restore signature display
+  updateSignature('so-sig', 'so-sig-display');
+
+  // Restore audit result
+  if (data.auditResult) setResult(data.auditResult);
+
+  // Restore question answers — trigger handleYN to rebuild finding blocks
+  if (data.questions) {
+    Object.entries(data.questions).forEach(([qid, qdata]) => {
+      const row = document.querySelector(`tr[data-qid="${qid}"]`);
+      if (!row) return;
+      const select = row.querySelector('.yn-select');
+      const notes  = row.querySelector('.q-notes textarea');
+      if (select && qdata.answer) {
+        select.value = qdata.answer;
+        handleYN(select, qid);
+      }
+      if (notes && qdata.notes) {
+        notes.value = qdata.notes;
+        autoResize(notes);
+      }
+    });
+  }
+
+  updateFindingsCount();
+  updateResultHint();
+  updateSummary();
+  updateFilenamePreview();
+  saveToStorage();
+}
+
+function showLoadBanner(filename) {
+  // Remove any existing banner
+  const existing = document.getElementById('load-banner');
+  if (existing) existing.remove();
+
+  const banner = document.createElement('div');
+  banner.id = 'load-banner';
+  banner.style.cssText = `
+    position: fixed; top: 0; left: 0; right: 0; z-index: 9999;
+    background: #16A34A; color: white;
+    padding: 10px 20px; font-size: 12px; font-weight: 600;
+    display: flex; justify-content: space-between; align-items: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  `;
+  banner.innerHTML = `
+    <span>✓ Audit loaded from: <em>${filename}</em></span>
+    <button onclick="this.parentElement.remove()" style="background:transparent;border:none;color:white;font-size:16px;cursor:pointer;padding:0 4px;">✕</button>
+  `;
+  document.body.prepend(banner);
+  setTimeout(() => { if (banner.parentElement) banner.remove(); }, 5000);
+}
 
 // ── AUTO-SAVE TO LOCAL STORAGE ──
 const STORAGE_KEY = 'F6021_audit_draft';
