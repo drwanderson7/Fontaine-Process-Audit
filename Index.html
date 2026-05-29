@@ -902,8 +902,9 @@
     .blank-field-value { font-size: 9px; }
     .blank-write-line { border-bottom: 1px solid #ccc; }
 
-    /* ── FINDINGS SUMMARY — always print ── */
-    .findings-summary { display: block !important; break-inside: avoid; }
+    /* ── FINDINGS SUMMARY — only print if visible and has rows ── */
+    .findings-summary { break-inside: avoid; }
+    .findings-summary.visible { display: block !important; }
     .summary-table th { font-size: 8px; padding: 4px 8px; }
     .summary-table td { font-size: 9px; padding: 5px 8px; }
     .summary-jump { display: none; }
@@ -1613,21 +1614,28 @@ function addFindingBlock(qid) {
 }
 
 function removeFindingBlock(qid) {
+  // Delete from findings object IMMEDIATELY — don't wait for animation
+  delete findings[qid];
+  updateFindingsCount();
+  updateSummary();
+
+  // Visual fade is async but state is already clean
   const block = document.getElementById(`finding-block-${qid}`);
   if (block) {
     block.style.animation = 'none';
     block.style.opacity = '0';
     block.style.transition = 'opacity 0.2s';
-    setTimeout(() => block.remove(), 200);
-  }
-  delete findings[qid];
-
-  setTimeout(() => {
+    setTimeout(() => {
+      block.remove();
+      if (Object.keys(findings).length === 0) {
+        document.getElementById('no-findings-msg').style.display = 'block';
+      }
+    }, 200);
+  } else {
     if (Object.keys(findings).length === 0) {
       document.getElementById('no-findings-msg').style.display = 'block';
     }
-    updateSummary();
-  }, 250);
+  }
 }
 
 function styleYN(select) {
@@ -1796,7 +1804,29 @@ function printBlank() {
   }, 2000);
 }
 
+function reconcileFindingsState() {
+  // Walk through all questions — if a question is not answered No,
+  // make sure it has no finding block and is not in findings object
+  document.querySelectorAll('.q-row').forEach(row => {
+    const qid = row.dataset.qid;
+    if (!qid) return;
+    const select = row.querySelector('.yn-select');
+    const val = select ? select.value : '';
+    const tier = tierMap[qid];
+    // If not No, or is informational — ensure finding is removed
+    if (val !== 'No' || tier === 'info') {
+      const block = document.getElementById(`finding-block-${qid}`);
+      if (block) block.remove();
+      delete findings[qid];
+    }
+  });
+  updateFindingsCount();
+  updateSummary();
+}
+
 function printForm() {
+  // Reconcile state before printing to catch any async cleanup issues
+  reconcileFindingsState();
   // Stamp pass/fail into data attribute so CSS can show it in print
   const wrap = document.querySelector('.pass-fail-wrap');
   if (wrap) wrap.setAttribute('data-result', auditResult || '— not set —');
