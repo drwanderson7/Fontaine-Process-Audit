@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>F-6000 — Corrective Action Form | Fontaine Specialized</title>
+<title>F-6021 — Process Audit Form | Fontaine Specialized</title>
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Pinyon+Script&display=swap');
   :root {
     --bg:       #F5F6F8;
     --surface:  #FFFFFF;
@@ -28,6 +29,7 @@
     font-size: 13px;
     background: var(--bg);
     color: var(--text);
+    padding: 0;
   }
 
   /* ── HEADER ── */
@@ -44,1414 +46,2161 @@
   .page-header .sub { font-size: 11px; color: rgba(255,255,255,0.6); margin-top: 2px; }
   .header-actions { display: flex; gap: 8px; flex-shrink: 0; }
 
-  .btn {
-    padding: 7px 14px;
-    border-radius: 5px;
-    border: none;
-    font-size: 12px;
-    font-weight: 600;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    transition: opacity 0.15s;
+  /* ── LEGEND BANNER ── */
+  .legend-banner {
+    background: var(--nav);
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding: 7px 24px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.75);
+    display: flex; flex-wrap: wrap; gap: 16px;
   }
-  .btn:hover { opacity: 0.85; }
-  .btn-primary { background: var(--blue);  color: var(--white); }
-  .btn-ghost   { background: rgba(255,255,255,0.12); color: var(--white); border: 1px solid rgba(255,255,255,0.25); }
-  .btn-danger  { background: var(--red);   color: var(--white); }
+  .legend-item { display: flex; align-items: center; gap: 5px; white-space: nowrap; }
+  .legend-mark { font-weight: 700; font-size: 13px; }
+  .lc-red    { color: #F87171; }
+  .lc-orange { color: #FB923C; }
+  .lc-yellow { color: #FCD34D; }
+  .lc-muted  { color: rgba(255,255,255,0.5); }
 
-  /* ── CONTENT ── */
-  .content { max-width: 900px; margin: 24px auto; padding: 0 16px 60px; }
+  /* ── INSTRUCTIONS ── */
+  .instructions {
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    padding: 7px 24px;
+    font-size: 11px;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  /* ── MAIN CONTENT ── */
+  .content { padding: 16px 24px 40px; max-width: 960px; margin: 0 auto; }
 
   /* ── CARD ── */
   .card {
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 8px;
-    margin-bottom: 16px;
+    border-radius: 6px;
+    margin-bottom: 12px;
     overflow: hidden;
   }
-  .card-header {
-    background: var(--nav);
-    color: var(--white);
-    padding: 9px 16px;
+
+  /* ── SECTION HEADER ── */
+  .section-header {
+    padding: 9px 14px;
+    font-weight: 700;
     font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
-  .card-body { padding: 16px; }
-
-  /* ── TOP META ROW ── */
-  .meta-grid {
-    display: grid;
-    grid-template-columns: 110px 1fr 1.5fr 1fr 1.5fr;
-    gap: 12px;
-    align-items: end;
-  }
-
-  /* ── FIELD ── */
-  .field { display: flex; flex-direction: column; gap: 4px; }
-  .field label {
-    font-size: 10px;
-    font-weight: 700;
-    color: var(--muted);
-    text-transform: uppercase;
     letter-spacing: 0.05em;
-  }
-  .field input, .field textarea, .field select {
-    border: 1px solid var(--border);
-    border-radius: 5px;
-    padding: 7px 9px;
-    font-size: 13px;
-    font-family: inherit;
-    color: var(--text);
-    background: var(--surface);
-    width: 100%;
-    transition: border-color 0.15s;
-  }
-  .field input:focus, .field textarea:focus, .field select:focus {
-    outline: none;
-    border-color: var(--blue);
-    box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
-  }
-  .field textarea { resize: none; min-height: 36px; line-height: 1.5; overflow: hidden; }
-
-  /* ── TOGGLE PILLS — Internal / Vendor ── */
-  .toggle-group { display: flex; gap: 0; border: 1px solid var(--border); border-radius: 5px; overflow: hidden; }
-  .toggle-group label {
-    flex: 1;
-    text-align: center;
-    padding: 7px 10px;
-    cursor: pointer;
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--muted);
-    background: var(--surface);
-    transition: background 0.15s, color 0.15s;
-    user-select: none;
-  }
-  .toggle-group input[type="radio"] { display: none; }
-  .toggle-group input[type="radio"]:checked + label {
-    background: var(--blue);
+    text-transform: uppercase;
     color: var(--white);
+    background: var(--blue);
   }
-
-  /* On print — hide the whole pill, show a plain bold type label instead */
-  .type-print-label { display: none; }
-
-  @media print {
-    .toggle-group { display: none !important; }
-    .type-print-label {
-      display: block;
-      font-size: 14px;
-      font-weight: 800;
-      color: #1A1A2E;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      border: 2px solid #1A1A2E;
-      border-radius: 4px;
-      padding: 4px 10px;
-      text-align: center;
-    }
-  }
-
-  /* ── CHECKBOX ROW ── */
-  .check-row { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; margin-top: 4px; }
-  .check-item { display: flex; align-items: center; gap: 6px; cursor: pointer; }
-  .check-item input[type="checkbox"] { width: 15px; height: 15px; accent-color: var(--blue); cursor: pointer; }
-  .check-item span { font-size: 13px; }
-
-  /* ── SECTION LABEL ── */
-  .section-label {
+  .section-header.orange { background: var(--orange); }
+  .section-header.nav    { background: var(--nav); }
+  .section-header.green  { background: var(--green); }
+  .sub-section-header {
+    padding: 6px 14px;
+    font-weight: 700;
     font-size: 11px;
-    font-weight: 700;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: 10px;
-  }
-
-  /* ── ROOT CAUSE CATEGORIES ── */
-  .cat-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 14px;
-  }
-  .cat-chip {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 5px 10px;
-    border-radius: 20px;
-    border: 1px solid var(--border);
-    background: var(--surface2);
-    cursor: pointer;
-    font-size: 12px;
-    font-weight: 500;
-    transition: background 0.15s, border-color 0.15s, color 0.15s;
-    user-select: none;
-  }
-  .cat-chip input[type="radio"] { display: none; }
-  .cat-chip:has(input:checked) {
-    background: var(--blue);
-    border-color: var(--blue);
     color: var(--white);
   }
+  .sub-section-header.yellow { background: var(--yellow); }
+  .sub-section-header.blue   { background: var(--blue); }
 
-  /* ── 5-WHY GRID ── */
-  .why-grid { border: 1px solid var(--border); border-radius: 6px; overflow: visible; }
-  .why-row {
+  /* ── HEADER FIELDS GRID ── */
+  .header-grid {
     display: grid;
-    grid-template-columns: 44px 66px 1fr;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+  .header-grid .field-pair {
+    display: contents;
+  }
+  .field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     border-bottom: 1px solid var(--border);
-    align-items: stretch;
-    min-height: 38px;
   }
-  .why-row:last-child { border-bottom: none; }
-  .why-step {
-    background: var(--nav);
-    color: var(--white);
-    font-weight: 700;
-    font-size: 13px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-right: 1px solid var(--border);
-  }
-  .why-prompt {
-    background: var(--surface2);
-    color: var(--blue);
-    font-weight: 700;
-    font-style: italic;
-    font-size: 13px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-right: 1px solid var(--border);
-  }
-  .why-cell {
-    padding: 6px 10px;
-    display: flex;
-    align-items: flex-start;
-    overflow: visible;
-  }
-  .why-editable {
-    width: 100%;
-    min-height: 24px;
-    font-size: 13px;
-    font-family: inherit;
-    color: var(--text);
-    line-height: 1.5;
-    outline: none;
-    word-break: break-word;
-    white-space: pre-wrap;
-    cursor: text;
-  }
-  .why-editable:empty::before {
-    content: attr(data-placeholder);
-    color: #aaa;
-    pointer-events: none;
-  }
-  .why-editable:focus { border-bottom: 2px solid var(--blue); }
-  .why-root-row { background: rgba(37,99,235,0.05); }
-  .why-root-label {
-    background: var(--blue);
-    color: var(--white);
-    font-weight: 700;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .field-row:last-child { border-bottom: none; }
+  .field-row.full { grid-template-columns: 1fr; }
+  .field-label {
     padding: 8px 12px;
-    border-right: 1px solid rgba(255,255,255,0.2);
-  }
-
-  /* ── ACTION ITEMS ── */
-  .action-block { margin-bottom: 16px; }
-  .action-block-label {
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: 8px;
-    padding-bottom: 6px;
-    border-bottom: 2px solid var(--border);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .action-block-label .badge {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 1px 8px;
-    font-size: 10px;
-    color: var(--muted);
-  }
-  .action-list { display: flex; flex-direction: column; gap: 8px; }
-  .action-item {
-    display: flex;
-    gap: 8px;
-    align-items: flex-start;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 10px;
-  }
-  .action-item textarea {
-    flex: 1;
-    border: none;
-    background: transparent;
-    font-family: inherit;
-    font-size: 13px;
-    color: var(--text);
-    resize: none;
-    min-height: 36px;
-    line-height: 1.5;
-    outline: none;
-  }
-  .action-item textarea:focus { border-bottom: 1px solid var(--blue); }
-  .action-item .remove-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: var(--muted);
-    font-size: 16px;
-    line-height: 1;
-    padding: 2px 4px;
-    border-radius: 3px;
-    flex-shrink: 0;
-    transition: color 0.15s;
-  }
-  .action-item .remove-btn:hover { color: var(--red); }
-  .add-action-btn {
-    margin-top: 8px;
-    background: none;
-    border: 1px dashed var(--border);
-    border-radius: 6px;
-    padding: 7px 14px;
-    font-size: 12px;
-    color: var(--blue);
     font-weight: 600;
-    cursor: pointer;
-    width: 100%;
-    transition: background 0.15s;
-  }
-  .add-action-btn:hover { background: var(--surface2); }
-
-  /* ── ATTACHMENT ZONE ── */
-  .attach-zone {
-    border: 2px dashed var(--border);
-    border-radius: 8px;
-    padding: 28px;
-    text-align: center;
-    cursor: pointer;
-    transition: border-color 0.15s, background 0.15s;
-  }
-  .attach-zone:hover, .attach-zone.drag-over {
-    border-color: var(--blue);
-    background: rgba(37,99,235,0.04);
-  }
-  .attach-zone .attach-icon { font-size: 28px; margin-bottom: 8px; }
-  .attach-zone p { color: var(--muted); font-size: 12px; }
-  .attach-zone p strong { color: var(--blue); }
-  .attach-list { margin-top: 12px; display: flex; flex-direction: column; gap: 6px; }
-  .attach-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    font-size: 11px;
     background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 5px;
-    padding: 6px 10px;
-    font-size: 12px;
+    border-right: 1px solid var(--border);
+    display: flex; align-items: center;
   }
-  .attach-item .file-name { flex: 1; font-weight: 500; }
-  .attach-item .file-size { color: var(--muted); }
-  .attach-item .remove-file {
-    background: none; border: none; cursor: pointer;
-    color: var(--muted); font-size: 14px; padding: 0 2px;
-    transition: color 0.15s;
+  .field-input-wrap {
+    padding: 4px 8px;
+    display: flex; align-items: center;
+    border-right: 1px solid var(--border);
   }
-  .attach-item .remove-file:hover { color: var(--red); }
-
-  /* ── APPROVAL GRID ── */
-  .approval-grid {
+  .field-input-wrap:last-child { border-right: none; }
+  .field-input-wrap input, .field-input-wrap textarea {
     width: 100%;
-    border-collapse: collapse;
-    font-size: 12px;
-    table-layout: fixed;
-  }
-  .approval-grid th {
-    background: var(--surface2);
-    padding: 6px 4px;
-    border: 1px solid var(--border);
-    font-size: 10px;
-    font-weight: 700;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    text-align: center;
-  }
-  .approval-grid th:first-child { width: 90px; }
-  .approval-grid td {
-    border: 1px solid var(--border);
-    padding: 6px 4px;
-    vertical-align: middle;
-    text-align: center;
-  }
-  .approval-grid .row-label {
-    text-align: left;
-    font-weight: 700;
-    white-space: nowrap;
-    font-size: 12px;
-    padding-left: 8px;
-  }
-  .approval-grid input[type="text"],
-  .approval-grid input[type="date"] {
     border: none;
-    border-bottom: 1px solid var(--border);
-    background: transparent;
-    font-family: inherit;
-    font-size: 11px;
-    width: 100%;
-    padding: 2px 0;
-    text-align: center;
-    color: var(--text);
     outline: none;
-  }
-  .approval-grid input:focus { border-bottom-color: var(--blue); }
-
-  /* Disposition toggle — stacked vertically */
-  .disposition-cell { display: flex; flex-direction: column; gap: 4px; align-items: stretch; }
-  .disp-btn {
-    padding: 4px 6px;
-    border-radius: 4px;
-    border: 1px solid var(--border);
-    background: var(--surface2);
-    font-size: 10px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: background 0.15s, color 0.15s, border-color 0.15s;
-    color: var(--muted);
-    width: 100%;
-    text-align: center;
-  }
-  .disp-btn.approved { background: var(--green); color: var(--white); border-color: var(--green); }
-  .disp-btn.rejected { background: var(--red);   color: var(--white); border-color: var(--red); }
-  .disp-btn.na       { background: var(--muted); color: var(--white); border-color: var(--muted); }
-
-  /* When a column is N/A — dim sig cell and date */
-  .sig-cell.na-state { background: var(--surface2); }
-  .sig-cell.na-state .sig-input  { pointer-events: none; opacity: 0.35; }
-  .sig-cell.na-state .sig-display { opacity: 0.35; }
-  .sig-cell.na-state .na-stamp {
-    display: flex !important;
-  }
-  .na-stamp {
-    display: none;
-    align-items: center;
-    justify-content: center;
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--muted);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 6px 0 2px;
-  }
-  td.date-cell.na-state input { pointer-events: none; opacity: 0.35; }
-
-  /* Notes row */
-  .notes-row td { padding: 10px; }
-  .notes-row textarea {
-    border: 1px solid var(--border);
-    border-radius: 5px;
-    padding: 7px 9px;
+    font-family: inherit;
     font-size: 12px;
-    font-family: inherit;
     color: var(--text);
-    background: var(--surface);
-    width: 100%;
-    min-height: 36px;
-    resize: none;
-    overflow: hidden;
-    outline: none;
-  }
-  .notes-row textarea:focus { border-color: var(--blue); }
-
-  /* ── FOOTER ── */
-  .form-footer {
-    margin-top: 24px;
-    text-align: center;
-    font-size: 10px;
-    color: var(--muted);
-    border-top: 1px solid var(--border);
-    padding-top: 12px;
+    background: transparent;
+    padding: 3px 4px;
   }
 
-  /* ── REV HISTORY ── */
-  .rev-history {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    margin-top: 24px;
-    overflow: hidden;
-  }
-  .rev-history-header {
-    background: var(--surface2);
-    padding: 9px 16px;
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    border-bottom: 1px solid var(--border);
-  }
-  .rev-table { width: 100%; border-collapse: collapse; font-size: 12px; }
-  .rev-table th {
+  /* ── QUESTIONS TABLE ── */
+  .q-table { width: 100%; border-collapse: collapse; }
+  .q-table thead th {
     background: var(--surface2);
     padding: 7px 12px;
-    text-align: left;
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 700;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
+    text-align: left;
     border-bottom: 1px solid var(--border);
   }
-  .rev-table td { padding: 8px 12px; border-bottom: 1px solid var(--border); }
-  .rev-table .rev-current td { background: rgba(37,99,235,0.05); font-weight: 600; }
-  .rev-note {
-    padding: 10px 16px;
+  .q-table thead th:nth-child(2) { width: 90px; text-align: center; }
+  .q-table thead th:nth-child(3) { width: 30%; }
+
+  .q-row td {
+    padding: 0;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+  .q-row:last-child td { border-bottom: none; }
+
+  .q-label {
+    padding: 8px 12px;
+    font-size: 12px;
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    min-height: 38px;
+  }
+  .tier-mark {
+    font-size: 14px;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .tier-critical .tier-mark { color: var(--red); }
+  .tier-major    .tier-mark { color: var(--orange); }
+  .tier-risk     .tier-mark { color: var(--yellow); }
+  .tier-info     .tier-mark { color: var(--muted); }
+
+  /* Left border accent per tier */
+  .tier-critical .q-label { border-left: 4px solid var(--red); }
+  .tier-major    .q-label { border-left: 4px solid var(--orange); }
+  .tier-risk     .q-label { border-left: 4px solid var(--yellow); }
+  .tier-info     .q-label { border-left: 4px solid var(--border); }
+
+  .q-yn {
+    text-align: center;
+    padding: 6px;
+    border-left: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+  }
+  .yn-select {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 4px 6px;
+    font-family: inherit;
+    font-size: 12px;
+    background: var(--surface);
+    color: var(--text);
+    width: 76px;
+    cursor: pointer;
+  }
+  .yn-select.answered-yes { border-color: var(--green);  background: #F0FDF4; color: var(--green);  font-weight: 700; }
+  .yn-select.answered-no  { border-color: var(--red);    background: #FEF2F2; color: var(--red);    font-weight: 700; }
+  .yn-select.answered-na  { border-color: var(--muted);  background: var(--surface2); color: var(--muted); }
+
+  .q-notes { padding: 4px 8px; }
+  .q-notes textarea {
+    width: 100%;
+    border: none;
+    outline: none;
+    font-family: inherit;
     font-size: 11px;
+    color: var(--text);
+    background: transparent;
+    padding: 4px;
+    resize: none;
+    overflow: hidden;
+    min-height: 28px;
+    line-height: 1.4;
+    display: block;
+  }
+  .q-notes textarea::placeholder { color: var(--muted); }
+
+  /* ── AUDIT RESULT ── */
+  .result-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-bottom: 1px solid var(--border);
+  }
+  .result-row:last-child { border-bottom: none; }
+  .result-cell {
+    padding: 10px 14px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .result-cell + .result-cell { border-left: 1px solid var(--border); }
+  .result-label { font-weight: 600; font-size: 11px; color: var(--muted); }
+
+  .pass-fail-wrap { display: flex; gap: 10px; }
+  .pf-btn {
+    padding: 6px 18px;
+    border-radius: 4px;
+    border: 2px solid var(--border);
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    background: var(--surface);
     color: var(--muted);
+    transition: all 0.15s;
+    letter-spacing: 0.05em;
+  }
+  .pf-btn.selected-pass { border-color: var(--green); background: #F0FDF4; color: var(--green); }
+  .pf-btn.selected-fail { border-color: var(--red);   background: #FEF2F2; color: var(--red); }
+
+  .result-hint {
+    font-size: 10px;
+    color: var(--muted);
+    font-style: italic;
+    margin-left: 4px;
+  }
+
+  .findings-count {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--blue);
+    min-width: 32px;
+    text-align: center;
+  }
+
+  /* ── FINDING BLOCKS ── */
+  .findings-container { margin-top: 0; }
+  .finding-block {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    margin-bottom: 12px;
+    overflow: hidden;
+    animation: slideIn 0.25s ease;
+  }
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .finding-header {
+    background: var(--orange);
+    color: var(--white);
+    padding: 9px 14px;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .finding-body { background: var(--surface); }
+
+  .f-field-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    border-bottom: 1px solid var(--border);
+    min-height: 36px;
+  }
+  .f-field-row:last-child { border-bottom: none; }
+  .f-field-row.full-row { grid-template-columns: 1fr; }
+  .f-label {
+    padding: 8px 12px;
+    font-weight: 600;
+    font-size: 11px;
+    background: var(--surface2);
+    border-right: 1px solid var(--border);
+    display: flex; align-items: center;
+  }
+  .f-value {
+    padding: 4px 8px;
+    display: flex; align-items: center; gap: 8px;
+    flex-wrap: wrap;
+  }
+  .f-value input, .f-value textarea, .f-value select {
+    border: none;
+    outline: none;
+    font-family: inherit;
+    font-size: 12px;
+    color: var(--text);
+    background: transparent;
+    width: 100%;
+    resize: none;
+  }
+  .f-value textarea { min-height: 52px; padding-top: 6px; }
+  .f-value input::placeholder, .f-value textarea::placeholder { color: var(--muted); }
+
+  .severity-section { border-top: 1px solid var(--border); }
+  .severity-toggle {
+    display: flex; align-items: center; gap: 8px;
+    padding: 7px 14px;
     background: #FFFBEB;
-    border-top: 1px solid #FDE68A;
+    border-bottom: 1px solid #FDE68A;
+    font-size: 11px;
+    color: var(--yellow);
+    font-weight: 600;
+    cursor: pointer;
+    user-select: none;
+  }
+  .severity-toggle input[type=checkbox] { cursor: pointer; width: 14px; height: 14px; accent-color: var(--yellow); }
+  .severity-body { display: none; }
+  .severity-body.open { display: block; }
+
+  /* Root cause checkboxes */
+  .checkbox-row {
+    display: flex; flex-wrap: wrap; gap: 14px;
+    padding: 8px 12px;
+  }
+  .checkbox-item {
+    display: flex; align-items: center; gap: 5px;
+    font-size: 12px; cursor: pointer;
+  }
+  .checkbox-item input[type=checkbox] { width: 14px; height: 14px; accent-color: var(--blue); cursor: pointer; }
+
+  /* Severity radio */
+  .severity-radio-row {
+    display: flex; gap: 20px; flex-wrap: wrap;
+    padding: 8px 12px;
+  }
+  .sev-option {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 12px; font-weight: 600; cursor: pointer;
+  }
+  .sev-option input[type=radio] { width: 14px; height: 14px; cursor: pointer; }
+  .sev-critical { color: var(--red); accent-color: var(--red); }
+  .sev-major    { color: var(--orange); accent-color: var(--orange); }
+
+  /* Yes/No inline selects in finding blocks */
+  .f-yn-select {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-family: inherit;
+    font-size: 12px;
+    background: var(--surface);
+    color: var(--text);
+    cursor: pointer;
+    min-width: 90px;
+  }
+  .f-yn-select.yes { border-color: var(--green); background: #F0FDF4; color: var(--green); font-weight: 700; }
+  .f-yn-select.no  { border-color: var(--red);   background: #FEF2F2; color: var(--red);   font-weight: 700; }
+
+  .f-note {
+    font-size: 10px;
+    color: var(--orange);
+    font-style: italic;
   }
 
-  /* ── PRINT ── */
-  @media print {
-    body { background: white; font-size: 10px; }
-    .page-header { background: #1E2A3A !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; padding: 8px 16px 6px; }
-    .header-actions { display: none; }
-    #save-indicator { display: none; }
-    .card-header { background: #1E2A3A !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; padding: 6px 12px; font-size: 10px; }
-    .card { margin-bottom: 8px; border-radius: 4px; }
-    .card-body { padding: 10px 12px; }
-    /* ── PAGE BREAK RULES ── */
-    /* Card headers never orphan — always keep with content below */
-    .card-header { page-break-after: avoid; break-after: avoid; }
-    /* Section 1 & meta — small enough to keep together */
-    .card:nth-child(1), .card:nth-child(2) { page-break-inside: avoid; break-inside: avoid; }
-    /* Section 3 action blocks — label must stay with its items */
-    .action-block { page-break-inside: avoid; break-inside: avoid; }
-    .action-block-label { page-break-after: avoid; break-after: avoid; }
-    /* Each individual action item stays on one page */
-    .action-item { page-break-inside: avoid; break-inside: avoid; margin-bottom: 6px; }
-    /* Section 5 approval table — keep together */
-    .approval-grid { page-break-inside: avoid; break-inside: avoid; }
-    /* Why grid — keep each row together */
-    .why-row { page-break-inside: avoid; break-inside: avoid; }
-    /* Cat chips row — keep together */
-    .cat-grid { page-break-inside: avoid; break-inside: avoid; }
-    /* Don't break between section label and first action */
-    .action-block-label + .action-list { page-break-before: avoid; break-before: avoid; }
-    /* Keep short-term and long-term blocks together within their card */
-    .card-body { page-break-inside: auto; break-inside: auto; }
-    .rev-history { display: none; }
-    .btn { display: none; }
-    .remove-btn, .remove-file, .add-action-btn { display: none; }
-    .cat-chip:has(input:checked) { background: #2563EB !important; color: white !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    .form-footer { display: block; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    .content { margin: 8px auto; padding: 0 10px 20px; }
-    .sig-input { display: none; }
-    .sig-cell { border-bottom: 1px solid #ccc; }
-    ::-webkit-input-placeholder { color: transparent !important; }
-    ::placeholder { color: transparent !important; }
-    /* Tighten section 1 */
-    #f-problem { min-height: 40px !important; }
-    /* ── INPUT PRINT FIX: hide inputs, show values as text ── */
-    /* All regular text inputs — hide and show value via wrapper */
-    .field input[type="text"],
-    .field input[type="date"],
-    .field textarea,
-    .approval-grid input[type="text"],
-    .approval-grid input[type="date"] {
-      -webkit-print-color-adjust: exact;
-      print-color-adjust: exact;
-      color: #1A1A2E !important;
-      background: white !important;
-      border-color: #ccc !important;
-    }
-    /* Why grid print — editable divs print naturally, just hide placeholder */
-    .why-editable:empty::before { content: none !important; }
-    .why-cell textarea { display: none !important; }
-    .why-row { page-break-inside: avoid; break-inside: avoid; }
-    /* Action textarea — show content as plain flowing text on print */
-    .action-item textarea { display: none !important; }
-    .action-item::after {
-      content: attr(data-print-val);
-      display: block;
-      font-size: 11px;
-      font-family: 'Segoe UI', Calibri, sans-serif;
-      color: #1A1A2E;
-      white-space: pre-wrap;
-      word-break: break-word;
-      line-height: 1.5;
-      flex: 1;
-    }
-    /* Problem field — show as plain div on print */
-    #f-problem { display: none !important; }
-    #f-problem-print {
-      display: block !important;
-      font-size: 11px;
-      color: #1A1A2E;
-      white-space: pre-wrap;
-      word-break: break-word;
-      line-height: 1.5;
-      min-height: 18px;
-      padding: 2px 0;
-    }
-    /* Footer — keep with approval section, no orphan on its own page */
-    .form-footer {
-      page-break-before: avoid;
-      break-before: avoid;
-      margin-top: 6px !important;
-      padding-top: 6px !important;
-      font-size: 9px;
-    }
-    /* Tighten card margins on print to reclaim space */
-    .card { margin-bottom: 5px !important; }
-    .card-body { padding: 8px 10px !important; }
-    .card-header { padding: 5px 10px !important; }
-    /* Date inputs — hide on print, show blank line for handwriting */
-    .approval-grid input[type="date"] { display: none !important; }
-    .date-cell::after {
-      content: '';
-      display: block;
-      border-bottom: 1px solid #999;
-      min-height: 20px;
-      width: 100%;
-    }
-    /* Tip box hidden on print to save space */
-    .why-tip-box { display: none; }
+  .car-field {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 12px;
+  }
+  .car-field input {
+    border: 1px solid var(--border) !important;
+    border-radius: 4px;
+    padding: 4px 8px !important;
+    width: 140px !important;
+    background: var(--surface) !important;
   }
 
-  @media (max-width: 600px) {
-    .meta-grid { grid-template-columns: 1fr 1fr; }
-    .cat-grid { gap: 6px; }
-    .content { padding: 0 10px 40px; }
+  /* ── SIGN-OFF ── */
+  .signoff-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0;
+  }
+  .signoff-field {
+    padding: 10px 14px;
+    border-right: 1px solid var(--border);
+  }
+  .signoff-field:last-child { border-right: none; }
+  .signoff-field label { display: block; font-size: 10px; font-weight: 700; color: var(--muted); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.04em; }
+  .signoff-field input {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    outline: none;
+    font-family: inherit;
+    font-size: 13px;
+    padding: 4px 0;
+    background: transparent;
+    color: var(--text);
   }
 
-  /* ── SIGNATURE CELLS ── */
-  @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap');
+  /* ── BUTTONS ── */
+  .btn {
+    padding: 8px 16px;
+    border-radius: 5px;
+    border: none;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex; align-items: center; gap: 6px;
+    transition: opacity 0.15s;
+    white-space: nowrap;
+  }
+  .btn:hover { opacity: 0.87; }
+  .btn-primary { background: var(--blue); color: var(--white); }
+  .btn-secondary { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
+  .btn-danger { background: var(--red); color: var(--white); font-size: 11px; padding: 4px 10px; }
 
-  .sig-cell {
+  /* ── SIGNATURE FIELD ── */
+  .sig-wrap {
     position: relative;
-    min-height: 52px;
-    padding: 4px 6px !important;
+    width: 100%;
   }
   .sig-input {
-    border: none !important;
-    border-bottom: 1px dashed var(--border) !important;
-    background: transparent !important;
-    font-family: inherit !important;
-    font-size: 12px !important;
-    width: 100% !important;
-    padding: 4px 2px !important;
-    text-align: center !important;
-    color: var(--muted) !important;
-    outline: none !important;
-    transition: border-color 0.15s !important;
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    outline: none;
+    font-family: inherit;
+    font-size: 13px;
+    padding: 4px 0;
+    background: transparent;
+    color: transparent !important;
+    -webkit-text-fill-color: transparent !important;
+    caret-color: var(--text);
     position: relative;
     z-index: 2;
   }
-  .sig-input:focus { border-bottom-color: var(--blue) !important; }
+  .sig-input::placeholder {
+    color: var(--muted);
+    -webkit-text-fill-color: var(--muted);
+    font-family: inherit;
+    font-size: 11px;
+  }
+  .sig-input.has-value::placeholder {
+    color: transparent !important;
+    -webkit-text-fill-color: transparent !important;
+  }
   .sig-display {
+    position: absolute;
+    top: -4px; left: 0;
+    width: 100%;
     font-family: 'Dancing Script', cursive;
     font-size: 22px;
-    color: #1a3a6e;
-    text-align: center;
-    line-height: 1.2;
-    padding: 4px 2px 2px;
-    min-height: 34px;
-    letter-spacing: 0.02em;
+    color: var(--nav);
     pointer-events: none;
+    line-height: 1.4;
+    padding: 0 2px;
     white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis;
+    z-index: 1;
   }
-  .sig-display.empty { min-height: 34px; }
+  .sig-display.empty { display: none; }
 
-  /* ── STATUS BADGE in header ── */
-  .car-status-badge {
-    display: inline-flex;
+  /* ── REVISION HISTORY ── */
+  .rev-history {
+    background: var(--surface);
+    border-top: 3px solid var(--blue);
+    padding: 16px 24px 20px;
+    max-width: 960px;
+    margin: 0 auto 0;
+  }
+  .rev-history-header {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 10px;
+  }
+  .rev-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+    margin-bottom: 12px;
+  }
+  .rev-table th {
+    background: var(--nav);
+    color: var(--white);
+    padding: 7px 10px;
+    text-align: left;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .rev-table td {
+    padding: 7px 10px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    color: var(--text);
+  }
+  .rev-current td { background: #EFF6FF; }
+  .rev-current td:first-child {
+    color: var(--blue);
+    font-weight: 700;
+    font-size: 13px;
+  }
+  .rev-note {
+    background: #FFFBEB;
+    border: 1px solid #FDE68A;
+    border-left: 4px solid var(--yellow);
+    border-radius: 4px;
+    padding: 10px 14px;
+    font-size: 11px;
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  /* ── FOOTER ── */
+  .form-footer {
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 6px;
-    padding: 4px 12px;
-    border-radius: 20px;
+    font-size: 10px;
+    color: var(--muted);
+    padding: 10px 24px;
+    border-top: 1px solid var(--border);
+    background: var(--nav);
+    color: rgba(255,255,255,0.55);
+  }
+  .footer-center {
+    font-weight: 600;
+    color: rgba(255,255,255,0.75);
+    letter-spacing: 0.03em;
+    font-size: 10px;
+    text-align: center;
+  }
+  .footer-left, .footer-right { font-size: 10px; white-space: nowrap; }
+
+  /* ── FINDINGS SUMMARY PANEL ── */
+  .findings-summary {
+    display: none;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+  .findings-summary.visible { display: block; }
+  .summary-header {
+    background: var(--nav);
+    color: var(--white);
+    padding: 8px 14px;
     font-size: 11px;
     font-weight: 700;
-    border: 1.5px solid;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
-  .status-open   { background: rgba(234,88,12,0.15); color: var(--orange); border-color: var(--orange); }
-  .status-closed { background: rgba(22,163,74,0.15);  color: var(--green);  border-color: var(--green); }
+  .summary-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .summary-table th {
+    background: var(--surface2);
+    padding: 6px 12px;
+    font-size: 10px;
+    font-weight: 700;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+  }
+  .summary-table td {
+    padding: 8px 12px;
+    font-size: 11px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+  .summary-table tr:last-child td { border-bottom: none; }
+  .summary-table tr:hover td { background: #F8FAFF; cursor: pointer; }
+  .summary-num {
+    font-weight: 700;
+    color: var(--muted);
+    width: 32px;
+    text-align: center;
+  }
+  .summary-question { color: var(--text); }
+  .summary-tier {
+    white-space: nowrap;
+    font-weight: 700;
+    font-size: 11px;
+    width: 120px;
+  }
+  .summary-tier.critical { color: var(--red); }
+  .summary-tier.major    { color: var(--orange); }
+  .summary-tier.risk     { color: var(--yellow); }
+  .summary-tier.info     { color: var(--muted); }
+  .summary-car {
+    white-space: nowrap;
+    font-size: 11px;
+    font-weight: 600;
+    width: 110px;
+  }
+  .summary-car.car-required  { color: var(--red); }
+  .summary-car.car-pending   { color: var(--orange); }
+  .summary-car.car-none      { color: var(--green); }
+  .summary-jump {
+    color: var(--blue);
+    font-size: 11px;
+    text-decoration: none;
+    white-space: nowrap;
+    width: 80px;
+    text-align: right;
+  }
+  .summary-jump:hover { text-decoration: underline; }
+
+  /* ── NO FINDINGS PLACEHOLDER ── */
+  .no-findings-msg {
+    text-align: center;
+    padding: 24px;
+    color: var(--muted);
+    font-size: 12px;
+    font-style: italic;
+    background: var(--surface);
+    border: 1px dashed var(--border);
+    border-radius: 6px;
+    margin-bottom: 12px;
+  }
+
+  /* ── BLANK FORM FINDING BLOCKS ── */
+  .blank-findings { display: none; }
+  .blank-findings.printing { display: block; }
+  .blank-finding-block {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    break-inside: avoid;
+  }
+  .blank-finding-header {
+    background: var(--orange);
+    color: var(--white);
+    padding: 7px 14px;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .blank-field {
+    display: grid;
+    border-bottom: 1px solid var(--border);
+    min-height: 32px;
+  }
+  .blank-field.two-col { grid-template-columns: 200px 1fr; }
+  .blank-field.full    { grid-template-columns: 1fr; }
+  .blank-field:last-child { border-bottom: none; }
+  .blank-field-label {
+    padding: 7px 12px;
+    font-weight: 600;
+    font-size: 10px;
+    background: var(--surface2);
+    border-right: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+  }
+  .blank-field-value {
+    padding: 7px 12px;
+    font-size: 10px;
+    min-height: 32px;
+  }
+  .blank-field-value.tall { min-height: 52px; }
+  .blank-write-line {
+    border-bottom: 1px solid var(--border);
+    margin: 4px 0;
+    height: 16px;
+  }
+  .blank-yn {
+    display: flex;
+    gap: 18px;
+    align-items: center;
+    font-size: 10px;
+    padding: 6px 12px;
+  }
+  .blank-yn-option {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: 600;
+  }
+  .blank-circle {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    border: 1.5px solid var(--muted);
+    display: inline-block;
+    flex-shrink: 0;
+  }
+  .blank-checkbox-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    padding: 7px 12px;
+    font-size: 10px;
+  }
+  .blank-checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .blank-check-box {
+    width: 12px; height: 12px;
+    border: 1.5px solid var(--muted);
+    display: inline-block;
+    flex-shrink: 0;
+  }
+
+  /* ── PRINT STYLES ── */
+  @media print {
+    /* ── BASE ── */
+    *, *::before, *::after { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    html, body { background: white !important; font-size: 10px; margin: 0; padding: 0; }
+
+    /* ── PAGE SIZE & MARGINS ── */
+    @page { size: letter portrait; margin: 0.45in 0.45in 0.45in 0.45in; }
+
+    /* ── HIDE INTERACTIVE / SCREEN-ONLY ELEMENTS ── */
+    .header-actions    { display: none !important; }
+    #save-indicator    { display: none !important; }
+    .btn               { display: none !important; }
+    .no-findings-msg   { display: none !important; }
+    .instructions      { display: none !important; }
+
+    /* ── LAYOUT ── */
+    .content { padding: 0; max-width: 100%; margin: 0; }
+    .card    { border-radius: 0; margin-bottom: 6px; border: 1px solid #E2E4E8; break-inside: avoid; box-shadow: none; }
+    .finding-block { break-inside: avoid; margin-bottom: 6px; border-radius: 0; }
+
+    /* ── HEADER BAND ── */
+    .page-header {
+      background: #1E2A3A !important;
+      padding: 8px 14px;
+      flex-direction: row;
+      align-items: center;
+    }
+    .page-header div:first-child div:first-child { font-size: 13px !important; }
+    .page-header .sub { font-size: 9px !important; }
+
+    /* ── LEGEND ── */
+    .legend-banner {
+      background: #1E2A3A !important;
+      padding: 5px 14px;
+      font-size: 8px;
+      gap: 10px;
+      flex-wrap: nowrap;
+    }
+    .legend-mark { font-size: 10px !important; }
+
+    /* ── SECTION HEADERS ── */
+    .section-header         { padding: 5px 10px; font-size: 9px; }
+    .section-header.orange  { background: #EA580C !important; }
+    .section-header.nav     { background: #1E2A3A !important; }
+    .sub-section-header     { padding: 4px 10px; font-size: 8px; }
+    .sub-section-header.yellow { background: #CA8A04 !important; }
+    .sub-section-header.blue   { background: #2563EB !important; }
+    .finding-header { padding: 5px 10px; font-size: 9px; background: #EA580C !important; }
+
+    /* ── HEADER FIELDS ── */
+    .field-row   { min-height: 24px; }
+    .field-label { font-size: 9px; padding: 4px 8px; }
+    .field-input-wrap { padding: 4px 8px; }
+    .field-input-wrap input { font-size: 10px; }
+
+    /* ── QUESTION TABLE ── */
+    .q-table thead th { font-size: 8px; padding: 4px 8px; }
+    .q-label          { font-size: 9px; padding: 5px 8px; min-height: 28px; }
+    .tier-mark        { font-size: 11px; }
+    .q-yn             { padding: 4px; }
+    .q-notes textarea {
+      font-size: 9px;
+      border: none !important;
+      background: transparent !important;
+      resize: none;
+      overflow: visible;
+      height: auto !important;
+    }
+
+    /* ── DROPDOWNS — show value as plain text in print ── */
+    .yn-select, .f-yn-select {
+      border: none !important;
+      background: transparent !important;
+      font-size: 10px !important;
+      font-weight: 700;
+      -webkit-appearance: none;
+      appearance: none;
+      padding: 2px 0;
+      width: auto;
+    }
+    .yn-select.answered-yes, .f-yn-select.yes { color: #16A34A !important; }
+    .yn-select.answered-no,  .f-yn-select.no  { color: #DC2626 !important; }
+    .yn-select.answered-na                    { color: #6B7280 !important; }
+
+    /* ── AUDIT RESULT ── */
+    .result-row  { min-height: 32px; }
+    .result-cell { padding: 6px 10px; }
+    .pf-btn      { display: none !important; }
+    .findings-count { font-size: 16px; }
+    #result-hint    { font-size: 9px; }
+
+    /* Show pass/fail as printed text instead of buttons */
+    .pass-fail-wrap::before {
+      content: attr(data-result);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    /* ── FINDING BLOCKS ── */
+    .finding-body    { background: white !important; }
+    .f-field-row     { min-height: 28px; }
+    .f-label         { font-size: 9px; padding: 4px 8px; }
+    .f-value         { font-size: 9px; padding: 4px 8px; }
+    .f-value input, .f-value textarea, .f-value select {
+      font-size: 9px;
+      border: none !important;
+      background: transparent !important;
+    }
+    .f-value textarea { min-height: 36px; }
+    .f-note  { font-size: 8px; }
+    .f-note  { display: none; } /* hide helper hints in print — they clutter */
+
+    /* severity section always visible in print */
+    .severity-section { display: block !important; }
+    .severity-body    { display: block !important; }
+
+    /* root cause checkboxes */
+    .checkbox-row  { padding: 4px 8px; gap: 10px; }
+    .checkbox-item { font-size: 9px; }
+    .severity-radio-row { padding: 4px 8px; gap: 14px; }
+    .sev-option { font-size: 9px; }
+
+    /* CAR field */
+    .car-field { font-size: 9px; }
+    .car-field input { font-size: 9px !important; border-bottom: 1px solid #ccc !important; background: transparent !important; width: 100px !important; }
+
+    /* ── AUDIT METHOD RADIOS ── */
+    input[type=radio] { -webkit-print-color-adjust: exact !important; }
+    .field-input-wrap label { font-size: 9px !important; }
+
+    /* ── SIGNATURE ── */
+    .sig-input { color: transparent !important; border-bottom: 1px solid #ccc !important; }
+    .sig-display { font-size: 20px !important; color: #1E2A3A !important; }
+
+    /* ── SIGN-OFF ── */
+    .signoff-grid  { grid-template-columns: 1fr 1fr 1fr; }
+    .signoff-field { padding: 8px 10px; }
+    .signoff-field label { font-size: 8px; }
+    .signoff-field input { font-size: 11px; border-bottom: 1px solid #ccc !important; }
+
+    /* ── FORM FOOTER ── */
+    .form-footer { font-size: 8px; padding: 6px 14px; }
+
+    /* ── BLANK FINDINGS ── */
+    .blank-findings.printing { display: block !important; }
+    .blank-finding-block { break-inside: avoid; page-break-inside: avoid; }
+    .blank-field-label { font-size: 9px; }
+    .blank-field-value { font-size: 9px; }
+    .blank-write-line { border-bottom: 1px solid #ccc; }
+
+    /* ── FINDINGS SUMMARY — only print if visible and has rows ── */
+    .findings-summary { break-inside: avoid; }
+    .findings-summary.visible { display: block !important; }
+    .summary-table th { font-size: 8px; padding: 4px 8px; }
+    .summary-table td { font-size: 9px; padding: 5px 8px; }
+    .summary-jump { display: none; }
+
+    /* ── REVISION HISTORY — screen only ── */
+    .rev-history { display: none !important; }
+
+    /* ── FOOTER ── */
+    .form-footer {
+      background: #1E2A3A !important;
+      color: rgba(255,255,255,0.6) !important;
+      padding: 6px 14px;
+      font-size: 8px;
+    }
+    .footer-center { color: rgba(255,255,255,0.8) !important; font-size: 8px; }
+
+    /* ── PAGE BREAKS ── */
+    .card              { page-break-inside: avoid; }
+    .finding-block     { page-break-inside: avoid; }
+    .section-header    { page-break-after: avoid; }
+    .finding-header    { page-break-after: avoid; }
+    .sub-section-header { page-break-after: avoid; }
+  }
+
+  /* ── TABLET RESPONSIVE ── */
+  @media (max-width: 700px) {
+    .content { padding: 10px 12px 30px; }
+    .header-grid .field-row { grid-template-columns: 1fr; }
+    .result-row { grid-template-columns: 1fr; }
+    .result-cell + .result-cell { border-left: none; border-top: 1px solid var(--border); }
+    .signoff-grid { grid-template-columns: 1fr; }
+    .signoff-field { border-right: none; border-bottom: 1px solid var(--border); }
+    .q-table thead th:nth-child(3) { display: none; }
+    .q-table .q-notes { display: none; }
+    .f-field-row { grid-template-columns: 1fr; }
+    .f-label { border-right: none; border-bottom: 1px solid var(--border); }
+    .legend-banner { flex-direction: column; gap: 6px; }
+    .page-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+    .header-actions { width: 100%; }
+    .header-actions .btn { flex: 1; justify-content: center; }
+    .pass-fail-wrap { gap: 8px; }
+  }
 </style>
 </head>
 <body>
 
-<!-- ══ PAGE HEADER ══ -->
+<!-- ── PAGE HEADER ── -->
 <div class="page-header">
   <div>
-    <h1>F-6000 — Corrective Action Form</h1>
-    <div class="sub">Fontaine Specialized &nbsp;|&nbsp; Controlled Document &nbsp;|&nbsp; Rev. 10 &nbsp;|&nbsp; 6/03/2026</div>
+    <div class="h1" style="font-size:16px;font-weight:700;letter-spacing:0.02em;color:#fff;">FONTAINE SPECIALIZED — PROCESS AUDIT FORM</div>
+    <div class="sub">Quality Management System &nbsp;|&nbsp; F-6021 &nbsp;|&nbsp; Rev. 4</div>
   </div>
-  <div style="display:flex;align-items:center;gap:12px;flex-shrink:0;">
-    <span id="save-indicator" style="font-size:11px;color:rgba(255,255,255,0.5);white-space:nowrap;"></span>
-    <div class="header-actions">
-      <button class="btn btn-ghost" onclick="clearForm()">⟳ New CAR</button>
-      <button class="btn btn-ghost" onclick="document.getElementById('json-import-input').click()">⤒ Import JSON</button>
-      <input type="file" id="json-import-input" accept=".json" style="display:none;" onchange="importJSON(this)">
-      <button class="btn btn-ghost" onclick="downloadJSON()">⤓ Export JSON</button>
-      <button class="btn btn-primary" onclick="window.print()">⎙ Print / PDF</button>
+  <div class="header-actions" style="flex-direction:column;align-items:flex-end;gap:6px;">
+    <div style="display:flex;gap:8px;">
+      <button class="btn btn-secondary" onclick="printForm()" title="In the print dialog: set Destination to 'Save as PDF', Paper = Letter, Margins = Default, enable Background graphics">🖨 Print / Save PDF</button>
+      <button class="btn btn-secondary" onclick="printBlank()" title="Prints a blank form with 2 risk-assessed finding blocks and 6 standard finding blocks" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.75);">📄 Print Blank Form</button>
+      <button class="btn btn-secondary" onclick="triggerLoadJSON()" title="Load a previously saved JSON audit file" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.75);">📂 Load Saved Audit</button>
+      <input type="file" id="json-file-input" accept=".json" style="display:none;" onchange="loadFromJSON(event)">
+
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;width:100%;gap:12px;">
+      <div id="filename-preview" style="font-size:10px;color:rgba(255,255,255,0.5);font-family:monospace;letter-spacing:0.02em;">
+        PA_[Process]_[Date].pdf
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span id="save-indicator" style="font-size:10px;color:rgba(255,255,255,0.45);transition:opacity 0.5s;white-space:nowrap;">
+          Auto-saving...
+        </span>
+        <button class="btn" onclick="clearStorage()" style="background:transparent;border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.5);font-size:10px;padding:4px 10px;">
+          ✕ Clear Draft
+        </button>
+      </div>
     </div>
   </div>
 </div>
 
+<!-- ── LEGEND ── -->
+<div class="legend-banner">
+  <div class="legend-item"><span class="legend-mark lc-red">★</span> Pre-Determined Critical — ISO 9001 mandatory clause — auto F-6000 CAR</div>
+  <div class="legend-item"><span class="legend-mark lc-orange">◆</span> Major — NO = audit failure + resolution required</div>
+  <div class="legend-item"><span class="legend-mark lc-yellow">▲</span> Risk-Assessed — auditor determines severity based on product / safety impact</div>
+  <div class="legend-item"><span class="legend-mark lc-muted">●</span> Informational — noted only</div>
+</div>
+
+<!-- ── INSTRUCTIONS ── -->
+<div class="instructions">
+  Instructions: Select Yes, No, or N/A for each question. Finding blocks will appear automatically for each NO answer. Complete the Audit Result and all Finding blocks before signing off.
+</div>
+
 <div class="content">
 
-  <!-- ══ TOP META ══ -->
+  <!-- ── HEADER FIELDS ── -->
   <div class="card">
-    <div class="card-body">
-      <div class="field" style="margin-bottom:12px;">
-        <label>Subject / Topic</label>
-        <input type="text" id="f-subject" placeholder="Brief description of the issue or topic of this CAR…">
+    <div class="field-row">
+      <div class="field-label">Audit Method</div>
+      <div class="field-input-wrap" style="border-right:1px solid var(--border);gap:16px;flex-wrap:wrap;">
+        <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;font-weight:600;">
+          <input type="radio" name="audit-method" id="am-observation" value="observation"
+                 onchange="saveToStorage()" style="width:14px;height:14px;accent-color:#2563EB;cursor:pointer;">
+          👁 Direct Observation — watching operator complete the task physically
+        </label>
+        <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;font-weight:600;">
+          <input type="radio" name="audit-method" id="am-verbal" value="verbal"
+                 onchange="saveToStorage()" style="width:14px;height:14px;accent-color:#2563EB;cursor:pointer;">
+          🗣 Verbal Interview — questions answered verbally by operator
+        </label>
       </div>
-      <div class="meta-grid">
-        <div class="field">
-          <label>CAR #</label>
-          <input type="text" id="f-car" placeholder="e.g. CAR-0042">
-        </div>
-        <div class="field">
-          <label>Date</label>
-          <input type="date" id="f-date">
-        </div>
-        <div class="field">
-          <label>Requested By</label>
-          <input type="text" id="f-requestedby" placeholder="Name / dept.">
-        </div>
-        <div class="field">
-          <label>Type</label>
-          <div class="toggle-group">
-            <input type="radio" name="type" id="t-internal" value="Internal" checked onchange="updateTypePrintLabel()">
-            <label for="t-internal">Internal</label>
-            <input type="radio" name="type" id="t-vendor" value="Vendor" onchange="updateTypePrintLabel()">
-            <label for="t-vendor">Vendor</label>
-          </div>
-          <div class="type-print-label" id="type-print-label">Internal</div>
-        </div>
-        <div class="field">
-          <label>Assigned To</label>
-          <input type="text" id="f-assignedto" placeholder="Name / team">
-        </div>
+      <div class="field-label" style="border-left:1px solid var(--border);">Method Notes</div>
+      <div class="field-input-wrap">
+        <input type="text" id="f-method-notes" placeholder="Any notes on audit method…" oninput="scheduleSave()">
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field-label">Date of Audit</div>
+      <div class="field-input-wrap" style="border-right:1px solid var(--border)">
+        <input type="date" id="f-date" oninput="updateFilenamePreview()">
+      </div>
+      <div class="field-label">Auditor</div>
+      <div class="field-input-wrap">
+        <input type="text" id="f-auditor" placeholder="Name">
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field-label">Process</div>
+      <div class="field-input-wrap" style="border-right:1px solid var(--border)">
+        <input type="text" id="f-process" placeholder="Process name" oninput="updateFilenamePreview()">
+      </div>
+      <div class="field-label">Operator Audited</div>
+      <div class="field-input-wrap">
+        <input type="text" id="f-operator" placeholder="Name">
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field-label">Part Number / Serial Number</div>
+      <div class="field-input-wrap" style="border-right:1px solid var(--border)">
+        <input type="text" id="f-partnum" placeholder="">
+      </div>
+      <div class="field-label">Revision Level</div>
+      <div class="field-input-wrap">
+        <input type="text" id="f-rev" placeholder="">
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field-label">Work Instruction #</div>
+      <div class="field-input-wrap" style="border-right:1px solid var(--border)">
+        <input type="text" id="f-wi" placeholder="">
+      </div>
+      <div class="field-label">Step of Process Reviewed</div>
+      <div class="field-input-wrap">
+        <input type="text" id="f-step" placeholder="">
+      </div>
+    </div>
+    <div class="field-row full">
+      <div class="field-label">Supplier Procedure / Documentation References</div>
+      <div class="field-input-wrap">
+        <input type="text" id="f-refs" placeholder="">
       </div>
     </div>
   </div>
 
-  <!-- ══ SECTION 1 — PROBLEM DEFINITION ══ -->
+  <!-- ── MANPOWER ── -->
   <div class="card">
-    <div class="card-header">Section 1 — Problem Definition</div>
-    <div class="card-body">
-      <div class="field" style="margin-bottom:14px;">
-        <label>Define the Problem <span style="font-weight:400;color:var(--muted);text-transform:none;">(be specific — who, what, where, when)</span></label>
-        <textarea id="f-problem" placeholder="Describe the problem in detail…" oninput="autoResize(this);document.getElementById('f-problem-print').textContent=this.value"></textarea>
-        <div id="f-problem-print" style="display:none;"></div>
-      </div>
-
-      <div style="display:flex;gap:32px;flex-wrap:wrap;align-items:flex-start;">
-        <div>
-          <div class="section-label" style="margin-bottom:6px;">Recurring Problem?</div>
-          <div class="check-row">
-            <label class="check-item">
-              <input type="checkbox" id="recurring-yes" onchange="handleRecurring('yes')">
-              <span>Yes</span>
-            </label>
-            <label class="check-item">
-              <input type="checkbox" id="recurring-no" onchange="handleRecurring('no')">
-              <span>No</span>
-            </label>
-          </div>
-        </div>
-        <div style="flex:1;min-width:260px;">
-          <div class="section-label" style="margin-bottom:6px;">Could this problem occur elsewhere?</div>
-          <div class="check-row" style="margin-bottom:8px;">
-            <label class="check-item">
-              <input type="checkbox" id="elsewhere-yes" onchange="handleElsewhere('yes')">
-              <span>Yes</span>
-            </label>
-            <label class="check-item">
-              <input type="checkbox" id="elsewhere-no" onchange="handleElsewhere('no')">
-              <span>No</span>
-            </label>
-          </div>
-          <div class="field" id="elsewhere-spec-row" style="display:none;">
-            <label>If YES, specify</label>
-            <input type="text" id="f-elsewhere-spec" placeholder="Describe where else this could occur…">
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ══ SECTION 2 — ROOT CAUSE ANALYSIS ══ -->
-  <div class="card">
-    <div class="card-header">Section 2 — Root Cause Analysis (5-Why)</div>
-    <div class="card-body">
-
-      <div class="section-label">Root Cause Category</div>
-      <div class="cat-grid">
-        <label class="cat-chip"><input type="radio" name="rcc" value="Design"> Design</label>
-        <label class="cat-chip"><input type="radio" name="rcc" value="Equipment"> Equipment</label>
-        <label class="cat-chip"><input type="radio" name="rcc" value="Process/Procedure/Documentation"> Process / Procedure / Documentation</label>
-        <label class="cat-chip"><input type="radio" name="rcc" value="Supplier"> Supplier</label>
-        <label class="cat-chip"><input type="radio" name="rcc" value="Training"> Training</label>
-        <label class="cat-chip"><input type="radio" name="rcc" value="Process Control"> Process Control</label>
-        <label class="cat-chip"><input type="radio" name="rcc" value="Process Variability"> Process Variability</label>
-        <label class="cat-chip" id="chip-cannot" title="Justification required in Step 5"><input type="radio" name="rcc" value="Cannot Determine"> Cannot Determine ⚠</label>
-      </div>
-
-      <div class="why-tip-box" style="background:rgba(37,99,235,0.05);border:1px solid rgba(37,99,235,0.15);border-radius:6px;padding:10px 14px;font-size:12px;color:var(--muted);margin-bottom:14px;line-height:1.6;">
-        <strong style="color:var(--blue);">How to complete the 5-Why:</strong> Using the problem from Section 1, ask <em>"Why did this happen?"</em> and record the answer in Step 1. Use that answer as the input for Step 2, and continue until you reach a process- or system-level cause (usually by Step 4 or 5). <em>Tip: if fixing that answer would solve the problem, you have not gone deep enough — keep asking why.</em>
-      </div>
-
-      <div class="why-grid">
-        <div class="why-row">
-          <div class="why-step">1</div>
-          <div class="why-prompt">WHY?</div>
-          <div class="why-cell" data-print-val="" id="why1-cell">
-            <div class="why-editable" id="why1" contenteditable="true" data-placeholder="Answer to first why…" oninput="syncWhyVal('why1')"></div>
-          </div>
-        </div>
-        <div class="why-row">
-          <div class="why-step">2</div>
-          <div class="why-prompt">WHY?</div>
-          <div class="why-cell" data-print-val="" id="why2-cell">
-            <div class="why-editable" id="why2" contenteditable="true" data-placeholder="Answer to second why…" oninput="syncWhyVal('why2')"></div>
-          </div>
-        </div>
-        <div class="why-row">
-          <div class="why-step">3</div>
-          <div class="why-prompt">WHY?</div>
-          <div class="why-cell" data-print-val="" id="why3-cell">
-            <div class="why-editable" id="why3" contenteditable="true" data-placeholder="Answer to third why…" oninput="syncWhyVal('why3')"></div>
-          </div>
-        </div>
-        <div class="why-row">
-          <div class="why-step">4</div>
-          <div class="why-prompt">WHY?</div>
-          <div class="why-cell" data-print-val="" id="why4-cell">
-            <div class="why-editable" id="why4" contenteditable="true" data-placeholder="Answer to fourth why…" oninput="syncWhyVal('why4')"></div>
-          </div>
-        </div>
-        <div class="why-row">
-          <div class="why-step">5</div>
-          <div class="why-prompt">WHY?</div>
-          <div class="why-cell" data-print-val="" id="why5-cell">
-            <div class="why-editable" id="why5" contenteditable="true" data-placeholder="Answer to fifth why…" oninput="syncWhyVal('why5')"></div>
-          </div>
-        </div>
-        <div class="why-row why-root-row">
-          <div class="why-root-label" style="grid-column:1/3;">Root Cause Statement</div>
-          <div class="why-cell" data-print-val="" id="root-cause-stmt-cell">
-            <div class="why-editable" id="root-cause-stmt" contenteditable="true" data-placeholder="Summarize the confirmed root cause…" oninput="syncWhyVal('root-cause-stmt')"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ══ SECTION 3 — CORRECTIVE & PREVENTATIVE ACTIONS ══ -->
-  <div class="card">
-    <div class="card-header">Section 3 — Corrective &amp; Preventative Actions</div>
-    <div class="card-body">
-
-      <div class="action-block">
-        <div class="action-block-label">
-          Short-Term Corrective Action
-          <span style="color:var(--muted);font-size:10px;font-weight:400;text-transform:none;">(corrects the immediate issue — minimum 1 required)</span>
-          <span class="badge" id="st-count">0 added</span>
-        </div>
-        <div class="action-list" id="st-list"></div>
-        <button class="add-action-btn" onclick="addAction('st')">+ Add Short-Term Action</button>
-      </div>
-
-      <div class="action-block" style="margin-top:20px;">
-        <div class="action-block-label">
-          Long-Term Preventative Action
-          <span style="color:var(--muted);font-size:10px;font-weight:400;text-transform:none;">(ensures recurrence is prevented — minimum 1 required)</span>
-          <span class="badge" id="lt-count">0 added</span>
-        </div>
-        <div class="action-list" id="lt-list"></div>
-        <button class="add-action-btn" onclick="addAction('lt')">+ Add Long-Term Action</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ══ SECTION 4 — ATTACHMENTS ══ -->
-  <div class="card">
-    <div class="card-header">Section 4 — Attachments / Photos</div>
-    <div class="card-body">
-      <div class="attach-zone" id="attach-zone"
-           onclick="document.getElementById('file-input').click()"
-           ondragover="e=>{e.preventDefault();this.classList.add('drag-over');}"
-           ondragleave="this.classList.remove('drag-over')"
-           ondrop="handleDrop(event)">
-        <div class="attach-icon">📎</div>
-        <p><strong>Click to attach</strong> or drag and drop files here</p>
-        <p style="margin-top:4px;">Photos, sketches, supporting documents</p>
-        <input type="file" id="file-input" multiple style="display:none;" onchange="handleFiles(this.files)">
-      </div>
-      <div class="attach-list" id="attach-list"></div>
-    </div>
-  </div>
-
-  <!-- ══ SECTION 5 — APPROVAL / DISPOSITION ══ -->
-  <div class="card">
-    <div class="card-header">Section 5 — Approval / Disposition</div>
-    <div class="card-body">
-      <table class="approval-grid">
-        <thead>
-          <tr>
-            <th style="text-align:left;">Disposition</th>
-            <th>Operation</th>
-            <th>Engineering</th>
-            <th>Manufacturing</th>
-            <th>QA</th>
-            <th>Purchasing *</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="row-label">Decision</td>
-            <td><div class="disposition-cell"><button class="disp-btn" id="d-ops-a" onclick="setDisp('ops','approved')">✓ Approved</button><button class="disp-btn" id="d-ops-r" onclick="setDisp('ops','rejected')">✗ Rejected</button><button class="disp-btn" id="d-ops-n" onclick="setDisp('ops','na')">— N/A</button></div></td>
-            <td><div class="disposition-cell"><button class="disp-btn" id="d-eng-a" onclick="setDisp('eng','approved')">✓ Approved</button><button class="disp-btn" id="d-eng-r" onclick="setDisp('eng','rejected')">✗ Rejected</button><button class="disp-btn" id="d-eng-n" onclick="setDisp('eng','na')">— N/A</button></div></td>
-            <td><div class="disposition-cell"><button class="disp-btn" id="d-mfg-a" onclick="setDisp('mfg','approved')">✓ Approved</button><button class="disp-btn" id="d-mfg-r" onclick="setDisp('mfg','rejected')">✗ Rejected</button><button class="disp-btn" id="d-mfg-n" onclick="setDisp('mfg','na')">— N/A</button></div></td>
-            <td><div class="disposition-cell"><button class="disp-btn" id="d-qa-a" onclick="setDisp('qa','approved')">✓ Approved</button><button class="disp-btn" id="d-qa-r" onclick="setDisp('qa','rejected')">✗ Rejected</button><button class="disp-btn" id="d-qa-n" onclick="setDisp('qa','na')">— N/A</button></div></td>
-            <td><div class="disposition-cell"><button class="disp-btn" id="d-pur-a" onclick="setDisp('pur','approved')">✓ Approved</button><button class="disp-btn" id="d-pur-r" onclick="setDisp('pur','rejected')">✗ Rejected</button><button class="disp-btn" id="d-pur-n" onclick="setDisp('pur','na')">— N/A</button></div></td>
-          </tr>
-          <tr>
-            <td class="row-label">Signature</td>
-            <td class="sig-cell" id="sc-ops">
-              <div class="na-stamp" id="na-ops">N / A</div>
-              <div class="sig-display empty" id="sig-ops"></div>
-              <input class="sig-input" type="text" id="n-ops" placeholder="Type name to sign" oninput="updateSig('ops',this.value)">
-            </td>
-            <td class="sig-cell" id="sc-eng">
-              <div class="na-stamp" id="na-eng">N / A</div>
-              <div class="sig-display empty" id="sig-eng"></div>
-              <input class="sig-input" type="text" id="n-eng" placeholder="Type name to sign" oninput="updateSig('eng',this.value)">
-            </td>
-            <td class="sig-cell" id="sc-mfg">
-              <div class="na-stamp" id="na-mfg">N / A</div>
-              <div class="sig-display empty" id="sig-mfg"></div>
-              <input class="sig-input" type="text" id="n-mfg" placeholder="Type name to sign" oninput="updateSig('mfg',this.value)">
-            </td>
-            <td class="sig-cell" id="sc-qa">
-              <div class="na-stamp" id="na-qa">N / A</div>
-              <div class="sig-display empty" id="sig-qa"></div>
-              <input class="sig-input" type="text" id="n-qa" placeholder="Type name to sign" oninput="updateSig('qa',this.value)">
-            </td>
-            <td class="sig-cell" id="sc-pur">
-              <div class="na-stamp" id="na-pur">N / A</div>
-              <div class="sig-display empty" id="sig-pur"></div>
-              <input class="sig-input" type="text" id="n-pur" placeholder="Type name to sign" oninput="updateSig('pur',this.value)">
-            </td>
-          </tr>
-          <tr>
-            <td class="row-label">Date</td>
-            <td class="date-cell" id="dc-ops"><input type="date" id="dt-ops"></td>
-            <td class="date-cell" id="dc-eng"><input type="date" id="dt-eng"></td>
-            <td class="date-cell" id="dc-mfg"><input type="date" id="dt-mfg"></td>
-            <td class="date-cell" id="dc-qa"><input type="date" id="dt-qa"></td>
-            <td class="date-cell" id="dc-pur"><input type="date" id="dt-pur"></td>
-          </tr>
-          <tr class="notes-row">
-            <td class="row-label" style="vertical-align:top;padding-top:12px;">Notes</td>
-            <td colspan="5">
-              <textarea id="approval-notes" placeholder="Any additional notes or conditions…" oninput="autoResize(this)"></textarea>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <div style="font-size:11px;color:var(--muted);margin-top:8px;">* Purchasing approval required for supplier-related CARs only.</div>
-    </div>
-  </div>
-
-  <!-- ══ FOOTER ══ -->
-  <div class="form-footer">
-    F-6000 &nbsp;|&nbsp; Rev. 10 &nbsp;|&nbsp; Date Revised: 6/03/2026 &nbsp;|&nbsp; Approver: Ops. Manager &nbsp;|&nbsp; Reviser: Drew Anderson
-    <div style="margin-top:6px;font-size:11px;font-weight:700;color:#DC2626;letter-spacing:0.03em;">
-      ⚠ This is a controlled document. If this text is in red, this is a controlled document.
-    </div>
-  </div>
-
-  <!-- ══ REVISION HISTORY ══ -->
-  <div class="rev-history">
-    <div class="rev-history-header">Document Revision History</div>
-    <table class="rev-table">
-      <thead>
-        <tr>
-          <th>Rev</th>
-          <th>Date</th>
-          <th>Description of Change</th>
-          <th>Author</th>
-          <th>Approved By</th>
-        </tr>
-      </thead>
+    <div class="section-header">Manpower</div>
+    <table class="q-table">
+      <thead><tr>
+        <th>Question</th>
+        <th>Yes / No</th>
+        <th>Notes</th>
+      </tr></thead>
       <tbody>
-        <tr class="rev-current">
-          <td>10</td>
-          <td>06/03/2026</td>
-          <td>Added Subject / Topic field to header meta section</td>
-          <td>Drew Anderson</td>
-          <td>Ops. Manager</td>
+        <tr class="q-row tier-major" data-qid="1.1">
+          <td><div class="q-label"><span class="tier-mark">◆</span><span>1.1) Does Fontaine have the right people with the right skills to perform the task?</span></div></td>
+          <td class="q-yn"><select class="yn-select" onchange="handleYN(this,'1.1')"><option value="">—</option><option>Yes</option><option>No</option><option>N/A</option></select></td>
+          <td class="q-notes"><textarea placeholder="Notes…" rows="1" oninput="autoResize(this)"></textarea></td>
         </tr>
-        <tr>
-          <td>9</td>
-          <td>06/02/2026</td>
-          <td>Converted from Word document to interactive HTML tool; updated appearance and added digital workflow features</td>
-          <td>Drew Anderson</td>
-          <td>Ops. Manager</td>
+        <tr class="q-row tier-info" data-qid="1.2">
+          <td><div class="q-label"><span class="tier-mark">●</span><span>1.2) Has personnel changed since last reviewed?</span></div></td>
+          <td class="q-yn"><select class="yn-select" onchange="handleYN(this,'1.2')"><option value="">—</option><option>Yes</option><option>No</option><option>N/A</option></select></td>
+          <td class="q-notes"><textarea placeholder="Notes…" rows="1" oninput="autoResize(this)"></textarea></td>
         </tr>
-        <tr>
-          <td>8</td>
-          <td>05/11/2026</td>
-          <td>Previous Word document release</td>
-          <td>Drew Anderson</td>
-          <td>Ops. Manager</td>
+        <tr class="q-row tier-info" data-qid="1.3">
+          <td><div class="q-label"><span class="tier-mark">●</span><span>1.3) Are there Special Certification / Training requirements (NASA, NDT, welding certifications, etc.)?</span></div></td>
+          <td class="q-yn"><select class="yn-select" onchange="handleYN(this,'1.3')"><option value="">—</option><option>Yes</option><option>No</option><option>N/A</option></select></td>
+          <td class="q-notes"><textarea placeholder="Notes…" rows="1" oninput="autoResize(this)"></textarea></td>
+        </tr>
+        <tr class="q-row tier-critical" data-qid="1.4">
+          <td><div class="q-label"><span class="tier-mark">★</span><span>1.4) Have the operators performing the task been trained? Is the training current?</span></div></td>
+          <td class="q-yn"><select class="yn-select" onchange="handleYN(this,'1.4')"><option value="">—</option><option>Yes</option><option>No</option><option>N/A</option></select></td>
+          <td class="q-notes"><textarea placeholder="Notes…" rows="1" oninput="autoResize(this)"></textarea></td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── MATERIAL ── -->
+  <div class="card">
+    <div class="section-header">Material</div>
+    <table class="q-table">
+      <thead><tr>
+        <th>Question</th><th>Yes / No</th><th>Notes</th>
+      </tr></thead>
+      <tbody>
+        <tr class="q-row tier-critical" data-qid="2.1">
+          <td><div class="q-label"><span class="tier-mark">★</span><span>2.1) Do they utilize the correct material (parts listed on drawing, welding wire, etc.)?</span></div></td>
+          <td class="q-yn"><select class="yn-select" onchange="handleYN(this,'2.1')"><option value="">—</option><option>Yes</option><option>No</option><option>N/A</option></select></td>
+          <td class="q-notes"><textarea placeholder="Notes…" rows="1" oninput="autoResize(this)"></textarea></td>
+        </tr>
+        <tr class="q-row tier-major" data-qid="2.2">
+          <td><div class="q-label"><span class="tier-mark">◆</span><span>2.2) Are the right materials identified on the Work Instruction and/or Technical Directives?</span></div></td>
+          <td class="q-yn"><select class="yn-select" onchange="handleYN(this,'2.2')"><option value="">—</option><option>Yes</option><option>No</option><option>N/A</option></select></td>
+          <td class="q-notes"><textarea placeholder="Notes…" rows="1" oninput="autoResize(this)"></textarea></td>
+        </tr>
+        <tr class="q-row tier-major" data-qid="2.3">
+          <td><div class="q-label"><span class="tier-mark">◆</span><span>2.3) Are shelf-life materials (paint, sealants, epoxy, glues, tapes, etc.) properly controlled and documented?</span></div></td>
+          <td class="q-yn"><select class="yn-select" onchange="handleYN(this,'2.3')"><option value="">—</option><option>Yes</option><option>No</option><option>N/A</option></select></td>
+          <td class="q-notes"><textarea placeholder="Notes…" rows="1" oninput="autoResize(this)"></textarea></td>
+        </tr>
+        <tr class="q-row tier-critical" data-qid="2.4">
+          <td><div class="q-label"><span class="tier-mark">★</span><span>2.4) Are non-conforming materials properly identified and controlled?</span></div></td>
+          <td class="q-yn"><select class="yn-select" onchange="handleYN(this,'2.4')"><option value="">—</option><option>Yes</option><option>No</option><option>N/A</option></select></td>
+          <td class="q-notes"><textarea placeholder="Notes…" rows="1" oninput="autoResize(this)"></textarea></td>
         </tr>
       </tbody>
     </table>
-    <div class="rev-note">
-      ⚠ This is a controlled document. Do not modify without QA approval. Store the master file in SharePoint; replace it when a new revision is issued.
+  </div>
+
+  <!-- ── METHODS ── -->
+  <div class="card">
+    <div class="section-header">Methods / Application</div>
+    <table class="q-table">
+      <thead><tr><th>Question</th><th>Yes / No</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr class="q-row tier-major" data-qid="3.1">
+          <td><div class="q-label"><span class="tier-mark">◆</span><span>3.1) Does an inspection at selected steps indicate adequate controls to assure a conforming product?</span></div></td>
+          <td class="q-yn"><select class="yn-select" onchange="handleYN(this,'3.1')"><option value="">—</option><option>Yes</option><option>No</option><option>N/A</option></select></td>
+          <td class="q-notes"><textarea placeholder="Notes…" rows="1" oninput="autoResize(this)"></textarea></td>
+        </tr>
+        <tr class="q-row tier-critical" data-qid="3.2">
+          <td><div class="q-label"><span class="tier-mark">★</span><span>3.2) Does Fontaine have documented techniques (work instructions) at the correct revision level?</span></div></td>
+          <td class="q-yn"><select class="yn-select" onchange="handleYN(this,'3.2')"><option value="">—</option><option>Yes</option><option>No</option><option>N/A</option></select></td>
+          <td class="q-notes"><textarea placeholder="Notes…" rows="1" oninput="autoResize(this)"></textarea></td>
+        </tr>
+        <tr class="q-row tier-risk" data-qid="3.3">
+          <td><div class="q-label"><span class="tier-mark">▲</span><span>3.3) Were the tasks performed properly during this evaluation?</span></div></td>
+          <td class="q-yn"><select class="yn-select" onchange="handleYN(this,'3.3')"><option value="">—</option><option>Yes</option><option>No</option><option>N/A</option></select></td>
+          <td class="q-notes"><textarea placeholder="Notes…" rows="1" oninput="autoResize(this)"></textarea></td>
+        </tr>
+        <tr class="q-row tier-major" data-qid="3.4">
+          <td><div class="q-label"><span class="tier-mark">◆</span><span>3.4) Are documentation requirements (heat treat charts, job sheets, traveler records) adequate and complete?</span></div></td>
+          <td class="q-yn"><select class="yn-select" onchange="handleYN(this,'3.4')"><option value="">—</option><option>Yes</option><option>No</option><option>N/A</option></select></td>
+          <td class="q-notes"><textarea placeholder="Notes…" rows="1" oninput="autoResize(this)"></textarea></td>
+        </tr>
+        <tr class="q-row tier-major" data-qid="3.5">
+          <td><div class="q-label"><span class="tier-mark">◆</span><span>3.5) Were the tasks and inspections properly documented after completion?</span></div></td>
+          <td class="q-yn"><select class="yn-select" onchange="handleYN(this,'3.5')"><option value="">—</option><option>Yes</option><option>No</option><option>N/A</option></select></td>
+          <td class="q-notes"><textarea placeholder="Notes…" rows="1" oninput="autoResize(this)"></textarea></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── MACHINERY ── -->
+  <div class="card">
+    <div class="section-header">Machinery</div>
+    <table class="q-table">
+      <thead><tr><th>Question</th><th>Yes / No</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr class="q-row tier-major" data-qid="4.1">
+          <td><div class="q-label"><span class="tier-mark">◆</span><span>4.1) Does the operator have the right tools, fixtures, and measuring equipment to monitor process output?</span></div></td>
+          <td class="q-yn"><select class="yn-select" onchange="handleYN(this,'4.1')"><option value="">—</option><option>Yes</option><option>No</option><option>N/A</option></select></td>
+          <td class="q-notes"><textarea placeholder="Notes…" rows="1" oninput="autoResize(this)"></textarea></td>
+        </tr>
+        <tr class="q-row tier-risk" data-qid="4.2">
+          <td><div class="q-label"><span class="tier-mark">▲</span><span>4.2) Is the required equipment / tools identified on the Work Instructions?</span></div></td>
+          <td class="q-yn"><select class="yn-select" onchange="handleYN(this,'4.2')"><option value="">—</option><option>Yes</option><option>No</option><option>N/A</option></select></td>
+          <td class="q-notes"><textarea placeholder="Notes…" rows="1" oninput="autoResize(this)"></textarea></td>
+        </tr>
+        <tr class="q-row tier-critical" data-qid="4.3">
+          <td><div class="q-label"><span class="tier-mark">★</span><span>4.3) Is the equipment calibrated to ensure continued accuracy?</span></div></td>
+          <td class="q-yn"><select class="yn-select" onchange="handleYN(this,'4.3')"><option value="">—</option><option>Yes</option><option>No</option><option>N/A</option></select></td>
+          <td class="q-notes"><textarea placeholder="Notes…" rows="1" oninput="autoResize(this)"></textarea></td>
+        </tr>
+        <tr class="q-row tier-risk" data-qid="4.4">
+          <td><div class="q-label"><span class="tier-mark">▲</span><span>4.4) Do the equipment / tools operate as specified / required after proper set up?</span></div></td>
+          <td class="q-yn"><select class="yn-select" onchange="handleYN(this,'4.4')"><option value="">—</option><option>Yes</option><option>No</option><option>N/A</option></select></td>
+          <td class="q-notes"><textarea placeholder="Notes…" rows="1" oninput="autoResize(this)"></textarea></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── ENVIRONMENT ── -->
+  <div class="card">
+    <div class="section-header">Environment</div>
+    <table class="q-table">
+      <thead><tr><th>Question</th><th>Yes / No</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr class="q-row tier-major" data-qid="5.1">
+          <td><div class="q-label"><span class="tier-mark">◆</span><span>5.1) Does the operator have the right environmental controls, accurately measured? (Temperature, lighting, humidity)</span></div></td>
+          <td class="q-yn"><select class="yn-select" onchange="handleYN(this,'5.1')"><option value="">—</option><option>Yes</option><option>No</option><option>N/A</option></select></td>
+          <td class="q-notes"><textarea placeholder="Notes…" rows="1" oninput="autoResize(this)"></textarea></td>
+        </tr>
+        <tr class="q-row tier-critical" data-qid="5.2">
+          <td><div class="q-label"><span class="tier-mark">★</span><span>5.2) Are specialized safety requirements followed? (ESD, hazmat, fall protection, PPE, confined space, etc.)</span></div></td>
+          <td class="q-yn"><select class="yn-select" onchange="handleYN(this,'5.2')"><option value="">—</option><option>Yes</option><option>No</option><option>N/A</option></select></td>
+          <td class="q-notes"><textarea placeholder="Notes…" rows="1" oninput="autoResize(this)"></textarea></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── AUDIT RESULT ── -->
+  <div class="card">
+    <div class="section-header nav">Audit Result</div>
+    <div class="result-row">
+      <div class="result-cell">
+        <span class="result-label">Overall Result</span>
+        <div class="pass-fail-wrap">
+          <button class="pf-btn" id="btn-pass" onclick="setResult('PASS')">✓ PASS</button>
+          <button class="pf-btn" id="btn-fail" onclick="setResult('FAIL')">✗ FAIL</button>
+        </div>
+        <span class="result-hint" id="result-hint"></span>
+      </div>
+      <div class="result-cell">
+        <span class="result-label">Total Findings</span>
+        <span class="findings-count" id="findings-count">0</span>
+        <span class="result-label" style="margin-left:16px">Comments</span>
+        <input type="text" id="result-comments" placeholder="General comments…" style="flex:1;border:none;outline:none;font-family:inherit;font-size:12px;padding:4px 6px;background:transparent;">
+      </div>
+    </div>
+  </div>
+
+  <!-- ── RESOLUTION & DISPOSITION ── -->
+  <div class="card">
+    <div class="section-header orange">Resolution &amp; Disposition — Complete one block per NO answer</div>
+  </div>
+
+  <!-- ── FINDINGS SUMMARY PANEL ── -->
+  <div class="findings-summary" id="findings-summary">
+    <div class="summary-header">
+      <span>Findings Summary</span>
+      <span id="summary-count-label" style="font-weight:400;font-size:10px;opacity:0.7;"></span>
+    </div>
+    <table class="summary-table" id="summary-table">
+      <thead>
+        <tr>
+          <th style="width:32px;">#</th>
+          <th>Question / Area</th>
+          <th>Tier</th>
+          <th>CAR Status</th>
+          <th style="text-align:right;">Jump To</th>
+        </tr>
+      </thead>
+      <tbody id="summary-tbody">
+      </tbody>
+    </table>
+  </div>
+
+  <div id="no-findings-msg" class="no-findings-msg">
+    No findings yet — finding blocks will appear here as questions are answered NO above.
+  </div>
+
+  <div class="findings-container" id="findings-container"></div>
+
+  <!-- ── BLANK FORM FINDING BLOCKS — hidden until Print Blank triggered ── -->
+  <div class="blank-findings" id="blank-findings"></div>
+
+  <!-- ── SIGN-OFF ── -->
+  <div class="card">
+    <div class="section-header" style="background:var(--blue)">Sign-Off</div>
+    <div class="signoff-grid">
+      <div class="signoff-field">
+        <label>Closed By (QA)</label>
+        <input type="text" id="so-closed-by" placeholder="Name">
+      </div>
+      <div class="signoff-field">
+        <label>Date Closed</label>
+        <input type="date" id="so-date">
+      </div>
+      <div class="signoff-field">
+        <label>Auditor Signature</label>
+        <div class="sig-wrap">
+          <input type="text" id="so-sig" class="sig-input"
+                 placeholder="Type your name to sign"
+                 oninput="updateSignature('so-sig', 'so-sig-display')"
+                 autocomplete="off">
+          <div class="sig-display empty" id="so-sig-display"></div>
+        </div>
+      </div>
     </div>
   </div>
 
 </div><!-- /content -->
 
+<!-- REVISION HISTORY — screen only -->
+<div class="rev-history">
+  <div class="rev-history-header">&#128196; Document Revision History &amp; Control</div>
+  <table class="rev-table">
+    <thead>
+      <tr>
+        <th>Rev</th>
+        <th>Effective Date</th>
+        <th>Description of Change</th>
+        <th>Author</th>
+        <th>Approved By</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="rev-current">
+        <td><strong>4</strong></td>
+        <td>05/21/2026</td>
+        <td>Added Audit Method field to header — auditor must now indicate whether the audit was conducted via Direct Observation (watching operator complete the task physically) or Verbal Interview (questions answered verbally). Removed Download Data button.</td>
+        <td>QA Dept.</td>
+        <td>Ops. Manager</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>05/18/2026</td>
+        <td>Question 4.2 (Is the required equipment / tools identified on the Work Instructions?) reclassified from ● Informational to ▲ Risk-Assessed. A No answer now triggers a severity assessment and finding block, as the absence of tool identification on a Work Instruction may or may not affect product conformance depending on context and requires auditor judgment.</td>
+        <td>QA Dept.</td>
+        <td>Ops. Manager</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>05/15/2026</td>
+        <td>Removed question 1.5 (Documented evidence of training completion). Training documentation evidence to be verified through separate records review process rather than at point of process audit.</td>
+        <td>QA Dept.</td>
+        <td>Ops. Manager</td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>05/13/2026</td>
+        <td>Initial release — replaces paper-based process audit checklist. Adds tiered question severity system, dynamic finding blocks, and digital PDF output.</td>
+        <td>QA Dept.</td>
+        <td>Ops. Manager</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="rev-note">
+    <strong>&#9888; Controlled Document Notice:</strong> This document is controlled under the Fontaine Specialized Quality Management System (ISO 9001). Do not modify without QA approval and a revision increment. The master copy is maintained in the designated SharePoint QMS folder. Completed audit PDFs are records and must be retained per the document retention policy. The revision number printed on each completed audit PDF identifies the form version in use at the time of the audit.
+  </div>
+</div>
+
+<div class="form-footer">
+  <div class="footer-left">F-6021 &nbsp;|&nbsp; Rev. 4 &nbsp;|&nbsp; Effective: 05/21/2026</div>
+  <div class="footer-center">CONTROLLED DOCUMENT &mdash; Fontaine Specialized Quality Management System &mdash; ISO 9001</div>
+  <div class="footer-right">Approver: Ops. Manager</div>
+</div>
+
 <script>
-  const SAVE_KEY = 'F6000_draft';
-
-  // ── Save indicator ──
-  function setSaveIndicator(msg, color) {
-    const el = document.getElementById('save-indicator');
-    el.textContent = msg;
-    el.style.color = color || 'rgba(255,255,255,0.5)';
-  }
-
-  // ── Collect all form data into a plain object ──
-  function collectData() {
-    const getRadio = (name) => { const el = document.querySelector(`input[name="${name}"]:checked`); return el ? el.value : ''; };
-    const stItems = [], ltItems = [];
-    document.querySelectorAll('#st-list .action-item textarea').forEach(ta => stItems.push(ta.value));
-    document.querySelectorAll('#lt-list .action-item textarea').forEach(ta => ltItems.push(ta.value));
-    return {
-      header: {
-        subject:     document.getElementById('f-subject').value,
-        carNumber:   document.getElementById('f-car').value,
-        date:        document.getElementById('f-date').value,
-        requestedBy: document.getElementById('f-requestedby').value,
-        type:        getRadio('type'),
-        assignedTo:  document.getElementById('f-assignedto').value,
-      },
-      section1: {
-        problemDefinition: document.getElementById('f-problem').value,
-        recurringYes:  document.getElementById('recurring-yes').checked,
-        recurringNo:   document.getElementById('recurring-no').checked,
-        elsewhereYes:  document.getElementById('elsewhere-yes').checked,
-        elsewhereNo:   document.getElementById('elsewhere-no').checked,
-        elsewhereSpec: document.getElementById('f-elsewhere-spec').value,
-      },
-      section2: {
-        rootCauseCategory: getRadio('rcc'),
-        why1: getWhyVal('why1'),
-        why2: getWhyVal('why2'),
-        why3: getWhyVal('why3'),
-        why4: getWhyVal('why4'),
-        why5: getWhyVal('why5'),
-        rootCauseStatement: getWhyVal('root-cause-stmt'),
-      },
-      section3: { shortTermActions: stItems, longTermActions: ltItems },
-      section5: {
-        dispositions: { ...dispState },
-        names: {
-          ops: document.getElementById('n-ops').value,
-          eng: document.getElementById('n-eng').value,
-          mfg: document.getElementById('n-mfg').value,
-          qa:  document.getElementById('n-qa').value,
-          pur: document.getElementById('n-pur').value,
-        },
-        dates: {
-          ops: document.getElementById('dt-ops').value,
-          eng: document.getElementById('dt-eng').value,
-          mfg: document.getElementById('dt-mfg').value,
-          qa:  document.getElementById('dt-qa').value,
-          pur: document.getElementById('dt-pur').value,
-        },
-        notes: document.getElementById('approval-notes').value,
-      },
-      savedAt: new Date().toISOString(),
-    };
-  }
-
-  // ── Save to localStorage ──
-  let saveTimer = null;
-  function scheduleSave() {
-    setSaveIndicator('Unsaved changes…', 'rgba(255,200,100,0.8)');
-    clearTimeout(saveTimer);
-    saveTimer = setTimeout(saveNow, 1500); // debounce 1.5s after last keystroke
-  }
-
-  function saveNow() {
-    try {
-      localStorage.setItem(SAVE_KEY, JSON.stringify(collectData()));
-      const t = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      setSaveIndicator(`✓ Draft saved ${t}`, 'rgba(100,220,140,0.85)');
-    } catch(e) {
-      setSaveIndicator('⚠ Could not save', 'rgba(255,120,120,0.9)');
-    }
-  }
-
-  // ── Restore from localStorage ──
-  function restoreData(d) {
-    if (!d) return;
-
-    // Header
-    const h = d.header || {};
-    if (h.subject)     document.getElementById('f-subject').value = h.subject;
-    if (h.carNumber)   document.getElementById('f-car').value = h.carNumber;
-    if (h.date)        document.getElementById('f-date').value = h.date;
-    if (h.requestedBy) document.getElementById('f-requestedby').value = h.requestedBy;
-    if (h.assignedTo)  document.getElementById('f-assignedto').value = h.assignedTo;
-    if (h.type) {
-      const r = document.querySelector(`input[name="type"][value="${h.type}"]`);
-      if (r) r.checked = true;
-    }
-
-    // Section 1
-    const s1 = d.section1 || {};
-    if (s1.problemDefinition) document.getElementById('f-problem').value = s1.problemDefinition;
-    if (s1.recurringYes)  { document.getElementById('recurring-yes').checked = true; }
-    if (s1.recurringNo)   { document.getElementById('recurring-no').checked = true; }
-    if (s1.elsewhereYes)  {
-      document.getElementById('elsewhere-yes').checked = true;
-      document.getElementById('elsewhere-spec-row').style.display = 'block';
-    }
-    if (s1.elsewhereNo)   { document.getElementById('elsewhere-no').checked = true; }
-    if (s1.elsewhereSpec) document.getElementById('f-elsewhere-spec').value = s1.elsewhereSpec;
-
-    // Section 2
-    const s2 = d.section2 || {};
-    if (s2.rootCauseCategory) {
-      const r = document.querySelector(`input[name="rcc"][value="${s2.rootCauseCategory}"]`);
-      if (r) r.checked = true;
-    }
-    ['why1','why2','why3','why4','why5'].forEach(id => {
-      if (s2[id]) setWhyVal(id, s2[id]);
-    });
-    if (s2.rootCauseStatement) setWhyVal('root-cause-stmt', s2.rootCauseStatement);
-
-    // Section 3 — rebuild action rows
-    const s3 = d.section3 || {};
-    (s3.shortTermActions || []).forEach(text => { addAction('st'); const items = document.querySelectorAll('#st-list .action-item textarea'); items[items.length-1].value = text; });
-    (s3.longTermActions  || []).forEach(text => { addAction('lt'); const items = document.querySelectorAll('#lt-list .action-item textarea'); items[items.length-1].value = text; });
-
-    // Section 5
-    const s5 = d.section5 || {};
-    const depts = ['ops','eng','mfg','qa','pur'];
-    if (s5.dispositions) {
-      depts.forEach(dept => { if (s5.dispositions[dept]) setDisp(dept, s5.dispositions[dept]); });
-    }
-    if (s5.names) depts.forEach(dept => {
-      const v = s5.names[dept];
-      if (v) { document.getElementById(`n-${dept}`).value = v; updateSig(dept, v); }
-    });
-    if (s5.dates) depts.forEach(dept => {
-      if (s5.dates[dept]) document.getElementById(`dt-${dept}`).value = s5.dates[dept];
-    });
-    if (s5.notes) document.getElementById('approval-notes').value = s5.notes;
-
-    // Show when it was last saved
-    if (d.savedAt) {
-      const t = new Date(d.savedAt).toLocaleString([], { month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' });
-      setSaveIndicator(`Draft restored — last saved ${t}`, 'rgba(100,220,140,0.85)');
-    }
-    setTimeout(autoResizeAll, 50);
-    updateTypePrintLabel();
-  }
-
-  // ── Why field sync (contenteditable → data store) ──
-  const WHY_IDS = ['why1','why2','why3','why4','why5','root-cause-stmt'];
-  function syncWhyVal(id) {
-    const el = document.getElementById(id);
-    const cell = document.getElementById(id + '-cell');
-    if (cell) cell.setAttribute('data-print-val', el.innerText);
-    scheduleSave();
-  }
-  function getWhyVal(id) {
-    return (document.getElementById(id) || {}).innerText || '';
-  }
-  function setWhyVal(id, val) {
-    const el = document.getElementById(id);
-    if (!el) return;
-    el.innerText = val || '';
-    const cell = document.getElementById(id + '-cell');
-    if (cell) cell.setAttribute('data-print-val', val || '');
-  }
-
-  // ── Type print label ──
-  function updateTypePrintLabel() {
-    const el = document.querySelector('input[name="type"]:checked');
-    document.getElementById('type-print-label').textContent = el ? el.value.toUpperCase() : 'INTERNAL';
-  }
-
-  // ── Auto-resize textareas ──
-  function autoResize(el) {
-    el.style.height = '0px';
-    el.style.height = Math.max(el.scrollHeight, 24) + 'px';
-  }
-  function autoResizeAll() {
-    document.querySelectorAll('textarea').forEach(el => {
-      autoResize(el);
-      if (el.parentElement) el.parentElement.setAttribute('data-print-val', el.value);
-    });
-    // Sync problem print div
-    const fp = document.getElementById('f-problem');
-    if (fp) document.getElementById('f-problem-print').textContent = fp.value;
-  }
-
-  // Set initial height on why textareas via JS (not CSS) so autoResize can override freely
-  document.querySelectorAll('.why-cell textarea').forEach(el => { el.style.height = '24px'; });
-
-  // ── Signature live-render ──
-  function updateSig(dept, name) {
-    const el = document.getElementById(`sig-${dept}`);
-    el.textContent = name.trim();
-    el.classList.toggle('empty', !name.trim());
-  }
-
-  // ── Mutual-exclusive checkboxes ──
-  function handleRecurring(val) {
-    if (val === 'yes') { document.getElementById('recurring-no').checked = false; }
-    else               { document.getElementById('recurring-yes').checked = false; }
-    scheduleSave();
-  }
-  function handleElsewhere(val) {
-    if (val === 'yes') {
-      document.getElementById('elsewhere-no').checked = false;
-      document.getElementById('elsewhere-spec-row').style.display = 'block';
-    } else {
-      document.getElementById('elsewhere-yes').checked = false;
-      document.getElementById('elsewhere-spec-row').style.display = 'none';
-    }
-    scheduleSave();
-  }
-
-  // ── Action items ──
-  const actionCounts = { st: 0, lt: 0 };
-
-  function addAction(type) {
-    actionCounts[type]++;
-    const num = actionCounts[type];
-    const listEl = document.getElementById(`${type}-list`);
-    const item = document.createElement('div');
-    item.className = 'action-item';
-    item.id = `${type}-item-${num}`;
-    item.innerHTML = `
-      <textarea placeholder="Describe the action, responsible party, and target completion date…" rows="2" id="${type}-text-${num}" oninput="scheduleSave();this.parentElement.setAttribute('data-print-val',this.value)"></textarea>
-      <button class="remove-btn" onclick="removeAction('${type}',${num})" title="Remove">×</button>
-    `;
-    listEl.appendChild(item);
-    updateCount(type);
-    scheduleSave();
-    item.querySelector('textarea').focus();
-  }
-
-  function removeAction(type, num) {
-    const el = document.getElementById(`${type}-item-${num}`);
-    if (el) el.remove();
-    updateCount(type);
-    scheduleSave();
-  }
-
-  function updateCount(type) {
-    const count = document.getElementById(`${type}-list`).querySelectorAll('.action-item').length;
-    document.getElementById(`${type}-count`).textContent = count === 0 ? '0 added' : `${count} added`;
-  }
-
-  // ── Disposition buttons ──
-  const dispState = {};
-  function setDisp(dept, val) {
-    if (dispState[dept] === val) val = '';
-    dispState[dept] = val;
-    const aBtn = document.getElementById(`d-${dept}-a`);
-    const rBtn = document.getElementById(`d-${dept}-r`);
-    const nBtn = document.getElementById(`d-${dept}-n`);
-    aBtn.className = 'disp-btn' + (val === 'approved' ? ' approved' : '');
-    rBtn.className = 'disp-btn' + (val === 'rejected' ? ' rejected' : '');
-    nBtn.className = 'disp-btn' + (val === 'na'       ? ' na'       : '');
-    const isNA = val === 'na';
-    document.getElementById(`sc-${dept}`).classList.toggle('na-state', isNA);
-    document.getElementById(`dc-${dept}`).classList.toggle('na-state', isNA);
-    scheduleSave();
-  }
-
-  // ── Attachments ──
-  const attachedFiles = [];
-  function handleFiles(files) {
-    Array.from(files).forEach(f => { attachedFiles.push(f); renderAttach(f); });
-    document.getElementById('file-input').value = '';
-  }
-  function handleDrop(e) {
-    e.preventDefault();
-    document.getElementById('attach-zone').classList.remove('drag-over');
-    handleFiles(e.dataTransfer.files);
-  }
-  function renderAttach(file) {
-    const list = document.getElementById('attach-list');
-    const item = document.createElement('div');
-    item.className = 'attach-item';
-    const size = file.size < 1024 ? `${file.size} B` :
-                 file.size < 1048576 ? `${(file.size/1024).toFixed(1)} KB` :
-                 `${(file.size/1048576).toFixed(1)} MB`;
-    item.innerHTML = `<span class="file-name">📄 ${file.name}</span><span class="file-size">${size}</span>
-      <button class="remove-file" title="Remove">×</button>`;
-    item.querySelector('.remove-file').onclick = () => {
-      const idx = attachedFiles.indexOf(file);
-      if (idx > -1) attachedFiles.splice(idx, 1);
-      item.remove();
-    };
-    list.appendChild(item);
-  }
-
-  // ── Export JSON ──
-  function downloadJSON() {
-    const data = { form: 'F-6000 Corrective Action Form', rev: 8, exported: new Date().toISOString(), ...collectData() };
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    const carNum = document.getElementById('f-car').value.replace(/\s+/g,'_') || 'draft';
-    const date   = document.getElementById('f-date').value || new Date().toISOString().split('T')[0];
-    a.href = url;
-    a.download = `F-6000_${carNum}_${date}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
-  }
-
-  // ── Import JSON ──
-  function importJSON(input) {
-    const file = input.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      try {
-        const data = JSON.parse(e.target.result);
-        // Wipe current state silently before restoring
-        document.querySelectorAll('input[type="text"], input[type="date"], textarea').forEach(el => el.value = '');
-        WHY_IDS.forEach(id => setWhyVal(id, ''));
-        document.querySelectorAll('input[type="radio"]').forEach(el => el.checked = false);
-        document.getElementById('t-internal').checked = true;
-        document.querySelectorAll('input[type="checkbox"]').forEach(el => el.checked = false);
-        document.getElementById('elsewhere-spec-row').style.display = 'none';
-        document.getElementById('st-list').innerHTML = '';
-        document.getElementById('lt-list').innerHTML = '';
-        updateCount('st'); updateCount('lt');
-        Object.keys(dispState).forEach(k => delete dispState[k]);
-        ['ops','eng','mfg','qa','pur'].forEach(dept => {
-          document.getElementById(`d-${dept}-a`).className = 'disp-btn';
-          document.getElementById(`d-${dept}-r`).className = 'disp-btn';
-          document.getElementById(`d-${dept}-n`).className = 'disp-btn';
-          document.getElementById(`sc-${dept}`).classList.remove('na-state');
-          document.getElementById(`dc-${dept}`).classList.remove('na-state');
-          document.getElementById(`sig-${dept}`).textContent = '';
-        });
-        // Restore from imported data
-        restoreData(data);
-        // Save imported data as current draft
-        localStorage.setItem(SAVE_KEY, JSON.stringify({...data, savedAt: new Date().toISOString()}));
-        const t = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        setSaveIndicator(`✓ Imported & saved ${t}`, 'rgba(100,220,140,0.85)');
-        setTimeout(autoResizeAll, 100);
-      } catch(err) {
-        alert('Could not load file — make sure it is a valid F-6000 JSON export.');
-      }
-      input.value = '';
-    };
-    reader.readAsText(file);
-  }
-
-  // ── Clear Form ──
-  function clearForm() {
-    if (!confirm('Start a new CAR? This will clear all fields and erase the saved draft.')) return;
-    document.querySelectorAll('input[type="text"], input[type="date"], textarea').forEach(el => el.value = '');
-    document.querySelectorAll('input[type="radio"]').forEach(el => el.checked = false);
-    document.getElementById('t-internal').checked = true;
-    document.querySelectorAll('input[type="checkbox"]').forEach(el => el.checked = false);
-    document.getElementById('elsewhere-spec-row').style.display = 'none';
-    document.getElementById('st-list').innerHTML = '';
-    document.getElementById('lt-list').innerHTML = '';
-    updateCount('st'); updateCount('lt');
-    document.getElementById('attach-list').innerHTML = '';
-    attachedFiles.length = 0;
-    Object.keys(dispState).forEach(k => delete dispState[k]);
-    ['ops','eng','mfg','qa','pur'].forEach(dept => {
-      document.getElementById(`d-${dept}-a`).className = 'disp-btn';
-      document.getElementById(`d-${dept}-r`).className = 'disp-btn';
-      document.getElementById(`d-${dept}-n`).className = 'disp-btn';
-      document.getElementById(`sc-${dept}`).classList.remove('na-state');
-      document.getElementById(`dc-${dept}`).classList.remove('na-state');
-      document.getElementById(`sig-${dept}`).textContent = '';
-    });
-    document.getElementById('f-date').value = new Date().toISOString().split('T')[0];
-    WHY_IDS.forEach(id => setWhyVal(id, ''));
-    localStorage.removeItem(SAVE_KEY);
-    setSaveIndicator('Draft cleared', 'rgba(255,255,255,0.4)');
-    addAction('st');
-    addAction('lt');
-    updateTypePrintLabel();
-  }
-
-  // ── Wire up all inputs to autosave + autoResize ──
-  document.addEventListener('input', e => {
-    scheduleSave();
-    if (e.target.tagName === 'TEXTAREA') autoResize(e.target);
-  });
-  document.addEventListener('change', scheduleSave);
-
-  // ── Init: restore draft or start fresh ──
-  const saved = localStorage.getItem(SAVE_KEY);
-  if (saved) {
-    try {
-      restoreData(JSON.parse(saved));
-    } catch(e) {
-      document.getElementById('f-date').value = new Date().toISOString().split('T')[0];
-      addAction('st');
-      addAction('lt');
-    }
+// ── SIGNATURE RENDERING ──
+function updateSignature(inputId, displayId) {
+  const input = document.getElementById(inputId);
+  const display = document.getElementById(displayId);
+  if (!display) return;
+  const val = input.value.trim();
+  if (val) {
+    display.textContent = val;
+    display.classList.remove('empty');
+    input.classList.add('has-value');
   } else {
-    document.getElementById('f-date').value = new Date().toISOString().split('T')[0];
-    addAction('st');
-    addAction('lt');
+    display.textContent = '';
+    display.classList.add('empty');
+    input.classList.remove('has-value');
   }
-  // Run after fonts/layout settle
-  setTimeout(autoResizeAll, 100);
-  updateTypePrintLabel();
+}
+
+// ── FILENAME PREVIEW ──
+function updateFilenamePreview() {
+  const preview = document.getElementById('filename-preview');
+  if (preview) preview.textContent = getFileName() + '.pdf';
+}
+
+// ── AUTO-RESIZE TEXTAREA ──
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = el.scrollHeight + 'px';
+
+  // If this notes field belongs to a question that has a finding block,
+  // live-update the "Notes from Audit" field in the finding block
+  const row = el.closest('tr');
+  if (!row) return;
+  const qid = row.dataset.qid;
+  if (!qid || !findings[qid]) return;
+  const notesRow = document.getElementById(`finding-notes-row-${qid}`);
+  if (!notesRow) return;
+  // Show/hide the row and update value
+  const findingNotesInput = notesRow.querySelector('input');
+  if (findingNotesInput) {
+    findingNotesInput.value = el.value;
+    notesRow.style.display = el.value ? '' : 'none';
+  }
+}
+
+// ── STATE ──
+const findings = {}; // qid -> finding block number
+let findingCounter = 0;
+let auditResult = null;
+
+// ── QUESTION TIER MAP ──
+const tierMap = {
+  '1.1':'major','1.2':'info','1.3':'info','1.4':'critical',
+  '2.1':'critical','2.2':'major','2.3':'major','2.4':'critical',
+  '3.1':'major','3.2':'critical','3.3':'risk','3.4':'major','3.5':'major',
+  '4.1':'major','4.2':'risk','4.3':'critical','4.4':'risk',
+  '5.1':'major','5.2':'critical'
+};
+
+// Question labels for finding block header
+const qLabels = {
+  '1.1':'1.1 — Right people / skills',
+  '1.2':'1.2 — Personnel changed',
+  '1.3':'1.3 — Special cert requirements',
+  '1.4':'1.4 — Operators trained / current',
+  '2.1':'2.1 — Correct material utilized',
+  '2.2':'2.2 — Materials on WI / Tech Directives',
+  '2.3':'2.3 — Shelf-life materials controlled',
+  '2.4':'2.4 — Non-conforming materials controlled',
+  '3.1':'3.1 — Inspection / adequate controls',
+  '3.2':'3.2 — Work instructions at correct rev level',
+  '3.3':'3.3 — Tasks performed properly',
+  '3.4':'3.4 — Documentation requirements complete',
+  '3.5':'3.5 — Tasks / inspections documented',
+  '4.1':'4.1 — Right tools / fixtures / measuring equipment',
+  '4.2':'4.2 — Equipment on Work Instructions',
+  '4.3':'4.3 — Equipment calibrated',
+  '4.4':'4.4 — Equipment / tools operate as specified',
+  '5.1':'5.1 — Environmental controls',
+  '5.2':'5.2 — Safety requirements followed'
+};
+
+function handleYN(select, qid) {
+  const val = select.value;
+  const tier = tierMap[qid];
+
+  // Style the select
+  select.className = 'yn-select';
+  if (val === 'Yes') select.classList.add('answered-yes');
+  else if (val === 'No') {
+    // Informational questions: style differently, no finding block
+    if (tier === 'info') {
+      select.classList.add('answered-na'); // gray — noted only
+    } else {
+      select.classList.add('answered-no');
+    }
+  } else if (val === 'N/A') select.classList.add('answered-na');
+
+  // Only trigger finding block for non-informational questions
+  if (val === 'No' && tier !== 'info') {
+    if (!findings[qid]) addFindingBlock(qid);
+  } else {
+    if (findings[qid]) removeFindingBlock(qid);
+  }
+
+  // For informational No — show a subtle note in the notes field
+  const row = select.closest('tr');
+  if (row) {
+    const notesField = row.querySelector('.q-notes textarea');
+    if (notesField) {
+      if (val === 'No' && tier === 'info') {
+        notesField.placeholder = 'Noted — no resolution required. Add any observations here…';
+        notesField.style.color = 'var(--muted)';
+        notesField.style.fontStyle = 'italic';
+      } else {
+        notesField.placeholder = 'Notes…';
+        notesField.style.color = '';
+        notesField.style.fontStyle = '';
+      }
+    }
+  }
+
+  updateFindingsCount();
+  updateResultHint();
+  updateSummary();
+}
+
+function addFindingBlock(qid) {
+  findingCounter++;
+  findings[qid] = findingCounter;
+  const num = findingCounter;
+  const tier = tierMap[qid];
+  const isRisk = tier === 'risk';
+  const isCritical = tier === 'critical';
+
+  // Fetch notes from the question row if already filled in
+  const qRow = document.querySelector(`tr[data-qid="${qid}"]`);
+  const existingNotes = qRow ? (qRow.querySelector('.q-notes textarea')?.value || '') : '';
+
+  const container = document.getElementById('findings-container');
+  const block = document.createElement('div');
+  block.className = 'finding-block';
+  block.id = `finding-block-${qid}`;
+
+  block.innerHTML = `
+    <div class="finding-header">
+      <span>Finding #${num} — ${qLabels[qid] || qid}</span>
+    </div>
+    <div class="finding-body">
+
+      <div class="f-field-row">
+        <div class="f-label">Question / Area</div>
+        <div class="f-value"><input type="text" value="${qLabels[qid] || qid}" placeholder="Question or area of finding"></div>
+      </div>
+      <div class="f-field-row" id="finding-notes-row-${qid}" style="${existingNotes ? '' : 'display:none'}">
+        <div class="f-label">Notes from Audit</div>
+        <div class="f-value"><input type="text" value="${existingNotes}" placeholder="Notes carried over from question…" style="color:var(--muted);font-style:italic;"></div>
+      </div>
+
+      ${isRisk ? `
+      <!-- SEVERITY ASSESSMENT for ▲ risk questions -->
+      <div class="severity-section">
+        <div class="sub-section-header yellow" style="font-size:11px;padding:6px 14px;">
+          ▲ Severity Assessment — required for Risk-Assessed questions
+        </div>
+        <div class="f-field-row">
+          <div class="f-label">Describe the deviation observed</div>
+          <div class="f-value"><textarea placeholder="Describe exactly what was observed…"></textarea></div>
+        </div>
+        <div class="f-field-row">
+          <div class="f-label">Does deviation affect product conformance or safety?</div>
+          <div class="f-value">
+            <select class="f-yn-select" onchange="styleYN(this)">
+              <option value="">— Select —</option>
+              <option>Yes</option>
+              <option>No</option>
+            </select>
+            <span class="f-note">YES → Critical — CAR required &nbsp;&nbsp; NO → Major — resolution only</span>
+          </div>
+        </div>
+        <div class="f-field-row">
+          <div class="f-label">Basis for determination</div>
+          <div class="f-value"><textarea placeholder="Document your reasoning…"></textarea></div>
+        </div>
+        <div class="f-field-row full-row">
+          <div class="f-value" style="padding:10px 14px;gap:24px;">
+            <strong style="font-size:11px;color:var(--muted);margin-right:8px;">Severity:</strong>
+            <label class="sev-option sev-critical"><input type="radio" name="sev-${qid}" value="CRITICAL"> CRITICAL — F-6000 CAR required</label>
+            <label class="sev-option sev-major"><input type="radio" name="sev-${qid}" value="MAJOR"> MAJOR — Resolution only</label>
+          </div>
+        </div>
+      </div>` : ''}
+
+      ${isCritical ? `
+      <div class="f-field-row full-row" style="background:#FEF2F2;">
+        <div class="f-value" style="padding:8px 14px;">
+          <span style="color:var(--red);font-weight:700;font-size:11px;">★ Pre-Determined Critical — F-6000 CAR is automatically required for this finding.</span>
+        </div>
+      </div>` : ''}
+
+      <!-- CORRECTIVE RESOLUTION -->
+      <div class="sub-section-header blue" style="font-size:11px;padding:6px 14px;">
+        Corrective Resolution — complete for all findings
+      </div>
+
+      <div class="f-field-row">
+        <div class="f-label">Immediate Action Taken</div>
+        <div class="f-value"><textarea placeholder="Describe what was corrected on the spot…"></textarea></div>
+      </div>
+
+      <div class="f-field-row full-row">
+        <div class="f-value" style="padding:8px 14px;flex-direction:column;align-items:flex-start;gap:6px;">
+          <span style="font-weight:600;font-size:11px;color:var(--muted);">Root Cause Category</span>
+          <div class="checkbox-row" style="padding:0;">
+            <label class="checkbox-item"><input type="checkbox"> Training</label>
+            <label class="checkbox-item"><input type="checkbox"> Procedure Unclear / Inadequate</label>
+            <label class="checkbox-item"><input type="checkbox"> Operator Error</label>
+            <label class="checkbox-item"><input type="checkbox"> Equipment</label>
+            <label class="checkbox-item"><input type="checkbox"> Other</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="f-field-row">
+        <div class="f-label">First Occurrence?</div>
+        <div class="f-value">
+          <select class="f-yn-select" onchange="styleYN(this)">
+            <option value="">— Select —</option>
+            <option>Yes</option>
+            <option>No</option>
+          </select>
+          <span class="f-note">If NO → pattern exists, escalate to F-6000 CAR regardless of severity</span>
+        </div>
+      </div>
+
+      <div class="f-field-row">
+        <div class="f-label">F-6000 CAR Required?</div>
+        <div class="f-value">
+          <select class="f-yn-select" onchange="styleYN(this)">
+            <option value="">— Select —</option>
+            <option>Yes</option>
+            <option>No</option>
+          </select>
+          <div class="car-field">
+            <span style="font-size:11px;color:var(--muted);white-space:nowrap;">If YES, CAR #:</span>
+            <input type="text" placeholder="CAR number">
+          </div>
+        </div>
+      </div>
+
+    </div>
+  `;
+
+  container.appendChild(block);
+  document.getElementById('no-findings-msg').style.display = 'none';
+  updateSummary();
+}
+
+function removeFindingBlock(qid) {
+  // Delete from findings object IMMEDIATELY — don't wait for animation
+  delete findings[qid];
+  updateFindingsCount();
+  updateSummary();
+
+  // Visual fade is async but state is already clean
+  const block = document.getElementById(`finding-block-${qid}`);
+  if (block) {
+    block.style.animation = 'none';
+    block.style.opacity = '0';
+    block.style.transition = 'opacity 0.2s';
+    setTimeout(() => {
+      block.remove();
+      if (Object.keys(findings).length === 0) {
+        document.getElementById('no-findings-msg').style.display = 'block';
+      }
+    }, 200);
+  } else {
+    if (Object.keys(findings).length === 0) {
+      document.getElementById('no-findings-msg').style.display = 'block';
+    }
+  }
+}
+
+function styleYN(select) {
+  select.className = 'f-yn-select';
+  if (select.value === 'Yes') select.classList.add('yes');
+  else if (select.value === 'No') select.classList.add('no');
+}
+
+function updateFindingsCount() {
+  const count = Object.keys(findings).length;
+  document.getElementById('findings-count').textContent = count;
+  document.getElementById('findings-count').style.color = count > 0 ? 'var(--red)' : 'var(--blue)';
+}
+
+function setResult(val) {
+  auditResult = val;
+  document.getElementById('btn-pass').className = 'pf-btn' + (val === 'PASS' ? ' selected-pass' : '');
+  document.getElementById('btn-fail').className = 'pf-btn' + (val === 'FAIL' ? ' selected-fail' : '');
+}
+
+function updateResultHint() {
+  const noCount = Object.keys(findings).length;
+  const hint = document.getElementById('result-hint');
+  const hasCritical = Object.keys(findings).some(q => tierMap[q] === 'critical');
+  if (hasCritical) {
+    hint.textContent = '★ Critical finding — auto FAIL';
+    hint.style.color = 'var(--red)';
+  } else if (noCount > 0) {
+    hint.textContent = `${noCount} finding(s) — review required`;
+    hint.style.color = 'var(--orange)';
+  } else {
+    hint.textContent = '';
+  }
+}
+
+function getFileName() {
+  const process = (document.getElementById('f-process').value || 'Process')
+    .trim().replace(/[^a-zA-Z0-9]/g, '_').substring(0, 30);
+  const date = (document.getElementById('f-date').value || '')
+    .replace(/-/g, '');
+  const datePart = date || new Date().toISOString().slice(0,10).replace(/-/g,'');
+  return `PA_${process}_${datePart}`;
+}
+
+function buildBlankFindingBlock(num, includeRiskAssessment) {
+  const riskSection = includeRiskAssessment ? `
+    <div class="sub-section-header yellow" style="font-size:10px;padding:5px 12px;background:#CA8A04;color:white;font-weight:700;">
+      ▲ Severity Assessment — complete for Risk-Assessed (▲) questions only
+    </div>
+    <div class="blank-field two-col">
+      <div class="blank-field-label">Describe the deviation observed</div>
+      <div class="blank-field-value tall">
+        <div class="blank-write-line"></div>
+        <div class="blank-write-line"></div>
+        <div class="blank-write-line"></div>
+      </div>
+    </div>
+    <div class="blank-field two-col">
+      <div class="blank-field-label">Does deviation affect product conformance or safety?</div>
+      <div class="blank-yn">
+        <div class="blank-yn-option"><span class="blank-circle"></span> Yes → Critical — CAR required</div>
+        <div class="blank-yn-option"><span class="blank-circle"></span> No → Major — resolution only</div>
+      </div>
+    </div>
+    <div class="blank-field two-col">
+      <div class="blank-field-label">Basis for determination</div>
+      <div class="blank-field-value tall">
+        <div class="blank-write-line"></div>
+        <div class="blank-write-line"></div>
+        <div class="blank-write-line"></div>
+      </div>
+    </div>
+    <div class="blank-field full">
+      <div class="blank-field-value" style="padding:8px 12px;font-weight:600;font-size:10px;">
+        Severity: &nbsp;&nbsp; ☐ &nbsp;CRITICAL — F-6000 CAR required &nbsp;&nbsp;&nbsp;&nbsp; ☐ &nbsp;MAJOR — Resolution only
+      </div>
+    </div>` : '';
+
+  return `
+    <div class="blank-finding-block">
+      <div class="blank-finding-header">FINDING #${num}${includeRiskAssessment ? ' — Includes Severity Assessment Section' : ''}</div>
+      <div class="blank-field two-col">
+        <div class="blank-field-label">Question / Area</div>
+        <div class="blank-field-value"><div class="blank-write-line"></div></div>
+      </div>
+      ${riskSection}
+      <div class="sub-section-header blue" style="font-size:10px;padding:5px 12px;background:#2563EB;color:white;font-weight:700;">
+        Corrective Resolution — complete for all findings
+      </div>
+      <div class="blank-field two-col">
+        <div class="blank-field-label">Immediate Action Taken</div>
+        <div class="blank-field-value tall">
+          <div class="blank-write-line"></div>
+          <div class="blank-write-line"></div>
+          <div class="blank-write-line"></div>
+        </div>
+      </div>
+      <div class="blank-field full">
+        <div class="blank-checkbox-row">
+          <span style="font-weight:600;color:#6B7280;margin-right:4px;">Root Cause:</span>
+          <div class="blank-checkbox-item"><span class="blank-check-box"></span> Training</div>
+          <div class="blank-checkbox-item"><span class="blank-check-box"></span> Procedure Unclear / Inadequate</div>
+          <div class="blank-checkbox-item"><span class="blank-check-box"></span> Operator Error</div>
+          <div class="blank-checkbox-item"><span class="blank-check-box"></span> Equipment</div>
+          <div class="blank-checkbox-item"><span class="blank-check-box"></span> Other</div>
+        </div>
+      </div>
+      <div class="blank-field two-col">
+        <div class="blank-field-label">First Occurrence?</div>
+        <div class="blank-yn">
+          <div class="blank-yn-option"><span class="blank-circle"></span> Yes</div>
+          <div class="blank-yn-option"><span class="blank-circle"></span> No → escalate to F-6000 CAR</div>
+        </div>
+      </div>
+      <div class="blank-field two-col">
+        <div class="blank-field-label">F-6000 CAR Required?</div>
+        <div class="blank-yn">
+          <div class="blank-yn-option"><span class="blank-circle"></span> Yes &nbsp; CAR #: _________________</div>
+          <div class="blank-yn-option"><span class="blank-circle"></span> No</div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function printBlank() {
+  const container = document.getElementById('blank-findings');
+
+  let html = `
+    <div style="background:#EA580C;color:white;padding:9px 14px;font-weight:700;font-size:12px;
+                letter-spacing:0.05em;text-transform:uppercase;border-radius:6px 6px 0 0;margin-bottom:0;">
+      Resolution &amp; Disposition — Complete one block per NO answer found above
+    </div>
+    <div style="margin-bottom:12px;border:1px solid #E2E4E8;border-top:none;border-radius:0 0 6px 6px;overflow:hidden;">
+      <div style="padding:6px 14px;background:#FFF7ED;font-size:10px;color:#EA580C;font-style:italic;border-bottom:1px solid #E2E4E8;">
+        Findings #1 and #2 include the Severity Assessment section for ▲ Risk-Assessed questions.
+        Use Findings #3–#8 for ★ Critical and ◆ Major findings which do not require severity assessment.
+      </div>
+    </div>`;
+
+  for (let i = 1; i <= 8; i++) {
+    html += buildBlankFindingBlock(i, i <= 2);
+  }
+
+  container.innerHTML = html;
+  container.classList.add('printing');
+
+  // Hide dynamic content during blank print
+  document.getElementById('findings-container').style.display = 'none';
+  document.getElementById('findings-summary').style.display = 'none';
+  document.getElementById('no-findings-msg').style.display = 'none';
+
+  const originalTitle = document.title;
+  document.title = 'PA_BlankForm_F6021_Rev4';
+  window.print();
+
+  // Restore after print dialog closes
+  setTimeout(() => {
+    document.title = originalTitle;
+    container.classList.remove('printing');
+    container.innerHTML = '';
+    document.getElementById('findings-container').style.display = '';
+    document.getElementById('findings-summary').style.display = '';
+    if (Object.keys(findings).length === 0) {
+      document.getElementById('no-findings-msg').style.display = 'block';
+    }
+  }, 2000);
+}
+
+function reconcileFindingsState() {
+  // Walk through all questions — if a question is not answered No,
+  // make sure it has no finding block and is not in findings object
+  document.querySelectorAll('.q-row').forEach(row => {
+    const qid = row.dataset.qid;
+    if (!qid) return;
+    const select = row.querySelector('.yn-select');
+    const val = select ? select.value : '';
+    const tier = tierMap[qid];
+    // If not No, or is informational — ensure finding is removed
+    if (val !== 'No' || tier === 'info') {
+      const block = document.getElementById(`finding-block-${qid}`);
+      if (block) block.remove();
+      delete findings[qid];
+    }
+  });
+  updateFindingsCount();
+  updateSummary();
+}
+
+function printForm() {
+  // Reconcile state before printing to catch any async cleanup issues
+  reconcileFindingsState();
+  // Stamp pass/fail into data attribute so CSS can show it in print
+  const wrap = document.querySelector('.pass-fail-wrap');
+  if (wrap) wrap.setAttribute('data-result', auditResult || '— not set —');
+  // Set document title so browser uses it as the suggested PDF filename
+  const originalTitle = document.title;
+  document.title = getFileName();
+  window.print();
+  // Restore title after print dialog closes
+  setTimeout(() => { document.title = originalTitle; }, 2000);
+}
+
+
+// ── FINDINGS SUMMARY ──
+const tierLabel = {
+  critical: { mark: '★', label: 'Critical',       cls: 'critical' },
+  major:    { mark: '◆', label: 'Major',           cls: 'major'    },
+  risk:     { mark: '▲', label: 'Risk-Assessed',   cls: 'risk'     },
+  info:     { mark: '●', label: 'Informational',   cls: 'info'     },
+};
+
+function getCarStatus(qid) {
+  const block = document.getElementById(`finding-block-${qid}`);
+  if (!block) return { label: '—', cls: 'car-pending' };
+  const tier = tierMap[qid];
+  if (tier === 'critical') return { label: '★ Required', cls: 'car-required' };
+  const carSelects = block.querySelectorAll('.f-yn-select');
+  const carSelect = carSelects[carSelects.length - 1];
+  if (!carSelect || !carSelect.value) return { label: 'Pending',      cls: 'car-pending'  };
+  if (carSelect.value === 'Yes')       return { label: 'Required',     cls: 'car-required' };
+  if (carSelect.value === 'No')        return { label: 'Not Required', cls: 'car-none'     };
+  return { label: 'Pending', cls: 'car-pending' };
+}
+
+function updateSummary() {
+  const panel      = document.getElementById('findings-summary');
+  const tbody      = document.getElementById('summary-tbody');
+  const countLabel = document.getElementById('summary-count-label');
+  const keys       = Object.keys(findings);
+
+  if (!panel || !tbody) return;
+
+  if (keys.length === 0) {
+    panel.classList.remove('visible');
+    return;
+  }
+
+  panel.classList.add('visible');
+  countLabel.textContent = `${keys.length} finding${keys.length > 1 ? 's' : ''}`;
+  tbody.innerHTML = '';
+
+  const sorted = keys.sort((a, b) => findings[a] - findings[b]);
+
+  sorted.forEach(qid => {
+    const num   = findings[qid];
+    const tier  = tierMap[qid];
+    const tInfo = tierLabel[tier] || tierLabel.info;
+    const car   = getCarStatus(qid);
+    const label = qLabels[qid] || qid;
+
+    const tr = document.createElement('tr');
+    tr.style.cursor = 'pointer';
+    tr.onclick = () => {
+      const block = document.getElementById(`finding-block-${qid}`);
+      if (block) block.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
+    tr.innerHTML = `
+      <td class="summary-num">${num}</td>
+      <td class="summary-question">${label}</td>
+      <td class="summary-tier ${tInfo.cls}">${tInfo.mark} ${tInfo.label}</td>
+      <td class="summary-car ${car.cls}">${car.label}</td>
+      <td><a class="summary-jump" href="#finding-block-${qid}" onclick="event.stopPropagation()">↓ View</a></td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+
+// ── LOAD FROM JSON ──
+function triggerLoadJSON() {
+  if (confirm('Loading a saved audit will replace the current form contents. Continue?')) {
+    document.getElementById('json-file-input').click();
+  }
+}
+
+function loadFromJSON(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const data = JSON.parse(e.target.result);
+      applyJSONData(data);
+      showLoadBanner(file.name);
+      // Reset file input so same file can be loaded again if needed
+      document.getElementById('json-file-input').value = '';
+    } catch(err) {
+      alert('Could not read the file. Make sure it is a valid F-6021 audit JSON file.');
+      console.error(err);
+    }
+  };
+  reader.readAsText(file);
+}
+
+function applyJSONData(data) {
+  // Clear existing finding blocks first
+  Object.keys(findings).forEach(qid => removeFindingBlock(qid));
+
+  const h  = data.header  || {};
+  const so = data.signOff || {};
+
+  // Restore header fields
+  const fieldMap = {
+    'f-date':         h.date         || '',
+    'f-auditor':      h.auditor      || '',
+    'f-process':      h.process      || '',
+    'f-operator':     h.operator     || '',
+    'f-partnum':      h.partNumber   || '',
+    'f-rev':          h.revision     || '',
+    'f-wi':           h.wiNumber     || '',
+    'f-step':         h.stepReviewed || '',
+    'f-refs':         h.references   || '',
+    'f-method-notes': h.methodNotes  || '',
+    'result-comments': data.comments || '',
+    'so-closed-by':   so.closedBy   || '',
+    'so-date':        so.dateClosed  || '',
+    'so-sig':         so.signature   || '',
+  };
+  Object.entries(fieldMap).forEach(([id, val]) => {
+    const el = document.getElementById(id);
+    if (el) { el.value = val; el.dispatchEvent(new Event('input')); }
+  });
+
+  // Restore audit method radio
+  if (h.auditMethod) {
+    const radio = document.querySelector(`input[name="audit-method"][value="${h.auditMethod}"]`);
+    if (radio) radio.checked = true;
+  }
+
+  // Restore signature display
+  updateSignature('so-sig', 'so-sig-display');
+
+  // Restore audit result
+  if (data.auditResult) setResult(data.auditResult);
+
+  // Restore question answers — trigger handleYN to rebuild finding blocks
+  if (data.questions) {
+    Object.entries(data.questions).forEach(([qid, qdata]) => {
+      const row = document.querySelector(`tr[data-qid="${qid}"]`);
+      if (!row) return;
+      const select = row.querySelector('.yn-select');
+      const notes  = row.querySelector('.q-notes textarea');
+      if (select && qdata.answer) {
+        select.value = qdata.answer;
+        handleYN(select, qid);
+      }
+      if (notes && qdata.notes) {
+        notes.value = qdata.notes;
+        autoResize(notes);
+      }
+    });
+  }
+
+  updateFindingsCount();
+  updateResultHint();
+  updateSummary();
+  updateFilenamePreview();
+  saveToStorage();
+}
+
+function showLoadBanner(filename) {
+  // Remove any existing banner
+  const existing = document.getElementById('load-banner');
+  if (existing) existing.remove();
+
+  const banner = document.createElement('div');
+  banner.id = 'load-banner';
+  banner.style.cssText = `
+    position: fixed; top: 0; left: 0; right: 0; z-index: 9999;
+    background: #16A34A; color: white;
+    padding: 10px 20px; font-size: 12px; font-weight: 600;
+    display: flex; justify-content: space-between; align-items: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  `;
+  banner.innerHTML = `
+    <span>✓ Audit loaded from: <em>${filename}</em></span>
+    <button onclick="this.parentElement.remove()" style="background:transparent;border:none;color:white;font-size:16px;cursor:pointer;padding:0 4px;">✕</button>
+  `;
+  document.body.prepend(banner);
+  setTimeout(() => { if (banner.parentElement) banner.remove(); }, 5000);
+}
+
+// ── AUTO-SAVE TO LOCAL STORAGE ──
+const STORAGE_KEY = 'F6021_audit_draft';
+
+function collectFormState() {
+  const state = {
+    savedAt: new Date().toISOString(),
+    header: {
+      date:         document.getElementById('f-date')?.value || '',
+      auditor:      document.getElementById('f-auditor')?.value || '',
+      process:      document.getElementById('f-process')?.value || '',
+      operator:     document.getElementById('f-operator')?.value || '',
+      partnum:      document.getElementById('f-partnum')?.value || '',
+      rev:          document.getElementById('f-rev')?.value || '',
+      wi:           document.getElementById('f-wi')?.value || '',
+      step:         document.getElementById('f-step')?.value || '',
+      refs:         document.getElementById('f-refs')?.value || '',
+      auditMethod:  document.querySelector('input[name="audit-method"]:checked')?.value || '',
+      methodNotes:  document.getElementById('f-method-notes')?.value || '',
+    },
+    auditResult: auditResult,
+    resultComments: document.getElementById('result-comments')?.value || '',
+    signoff: {
+      closedBy: document.getElementById('so-closed-by')?.value || '',
+      date:     document.getElementById('so-date')?.value || '',
+      sig:      document.getElementById('so-sig')?.value || '',
+    },
+    questions: {},
+    findingBlocks: {},
+  };
+
+  // Save all question answers and notes
+  document.querySelectorAll('.q-row').forEach(row => {
+    const qid = row.dataset.qid;
+    if (!qid) return;
+    const yn    = row.querySelector('.yn-select')?.value || '';
+    const notes = row.querySelector('.q-notes textarea')?.value || '';
+    state.questions[qid] = { yn, notes };
+  });
+
+  // Save finding block content
+  Object.keys(findings).forEach(qid => {
+    const block = document.getElementById(`finding-block-${qid}`);
+    if (!block) return;
+    const inputs    = [...block.querySelectorAll('input[type=text], textarea')].map(el => el.value);
+    const selects   = [...block.querySelectorAll('select')].map(el => el.value);
+    const checks    = [...block.querySelectorAll('input[type=checkbox]')].map(el => el.checked);
+    const radios    = [...block.querySelectorAll('input[type=radio]')].map(el => ({ name: el.name, value: el.value, checked: el.checked }));
+    state.findingBlocks[qid] = { inputs, selects, checks, radios };
+  });
+
+  return state;
+}
+
+function saveToStorage() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(collectFormState()));
+    updateSaveIndicator('Saved');
+  } catch(e) {
+    console.warn('Auto-save failed:', e);
+  }
+}
+
+function restoreFromStorage() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return false;
+    const state = JSON.parse(raw);
+
+    // Restore header fields
+    if (state.header) {
+      Object.entries(state.header).forEach(([key, val]) => {
+        if (key === 'auditMethod') {
+          const radio = document.querySelector(`input[name="audit-method"][value="${val}"]`);
+          if (radio) radio.checked = true;
+          return;
+        }
+        const el = document.getElementById(`f-${key}`);
+        if (el) { el.value = val; el.dispatchEvent(new Event('input')); }
+      });
+    }
+
+    // Restore audit result
+    if (state.auditResult) setResult(state.auditResult);
+    if (state.resultComments) {
+      const rc = document.getElementById('result-comments');
+      if (rc) rc.value = state.resultComments;
+    }
+
+    // Restore sign-off
+    if (state.signoff) {
+      const so = state.signoff;
+      if (document.getElementById('so-closed-by')) document.getElementById('so-closed-by').value = so.closedBy || '';
+      if (document.getElementById('so-date'))      document.getElementById('so-date').value      = so.date     || '';
+      if (document.getElementById('so-sig')) {
+        document.getElementById('so-sig').value = so.sig || '';
+        updateSignature('so-sig', 'so-sig-display');
+      }
+    }
+
+    // Restore question answers — trigger handleYN to rebuild finding blocks
+    if (state.questions) {
+      Object.entries(state.questions).forEach(([qid, data]) => {
+        const row = document.querySelector(`tr[data-qid="${qid}"]`);
+        if (!row) return;
+        const select = row.querySelector('.yn-select');
+        const notes  = row.querySelector('.q-notes textarea');
+        if (select && data.yn) {
+          select.value = data.yn;
+          handleYN(select, qid);
+        }
+        if (notes && data.notes) {
+          notes.value = data.notes;
+          autoResize(notes);
+        }
+      });
+    }
+
+    // Restore finding block content after blocks are created
+    setTimeout(() => {
+      if (state.findingBlocks) {
+        Object.entries(state.findingBlocks).forEach(([qid, data]) => {
+          const block = document.getElementById(`finding-block-${qid}`);
+          if (!block) return;
+          const inputs  = block.querySelectorAll('input[type=text], textarea');
+          const selects = block.querySelectorAll('select');
+          const checks  = block.querySelectorAll('input[type=checkbox]');
+          const radios  = block.querySelectorAll('input[type=radio]');
+          data.inputs?.forEach((val, i)  => { if (inputs[i])  { inputs[i].value = val; if (inputs[i].tagName === 'TEXTAREA') autoResize(inputs[i]); } });
+          data.selects?.forEach((val, i) => { if (selects[i]) { selects[i].value = val; styleYN(selects[i]); } });
+          data.checks?.forEach((val, i)  => { if (checks[i])  checks[i].checked = val; });
+          data.radios?.forEach((r, i)    => { if (radios[i] && radios[i].name === r.name) radios[i].checked = r.checked; });
+        });
+      }
+      updateSummary();
+      updateFindingsCount();
+      updateResultHint();
+      updateFilenamePreview();
+    }, 300);
+
+    return state.savedAt;
+  } catch(e) {
+    console.warn('Restore failed:', e);
+    return false;
+  }
+}
+
+function clearStorage() {
+  if (confirm('Clear saved draft and reset the form? This cannot be undone.')) {
+    localStorage.removeItem(STORAGE_KEY);
+    location.reload();
+  }
+}
+
+function updateSaveIndicator(status) {
+  const el = document.getElementById('save-indicator');
+  if (!el) return;
+  const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  el.textContent = `${status} ${now}`;
+  el.style.opacity = '1';
+  setTimeout(() => { el.style.opacity = '0.5'; }, 2000);
+}
+
+// Auto-save every 30 seconds and on any input
+let saveTimer;
+function scheduleSave() {
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(saveToStorage, 1500); // debounce 1.5s after last keystroke
+}
+
+// Hook into all inputs on the page
+document.addEventListener('input',  scheduleSave);
+document.addEventListener('change', scheduleSave);
+
+// Restore on page load
+window.addEventListener('DOMContentLoaded', () => {
+  const savedAt = restoreFromStorage();
+  if (savedAt) {
+    const time = new Date(savedAt).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' });
+    updateSaveIndicator(`Draft restored from ${time} —`);
+    document.getElementById('save-indicator').style.opacity = '1';
+  }
+});
+
 </script>
 </body>
 </html>
